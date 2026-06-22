@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* Hide scrollbar for slider */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Infinite marquee scroll animations */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 30s linear infinite;
+}
+
+.animate-scroll-left-slow {
+  animation: scroll-left 40s linear infinite;
+}
+
+/* Shining border animation */
+@property --shine-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes shine-rotate {
+  0% { --shine-angle: 0deg; }
+  100% { --shine-angle: 360deg; }
+}
+
+.shimmer-border {
+  position: relative;
+  border: none !important;
+  background: transparent;
+  isolation: isolate;
+}
+
+.shimmer-border::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--shine-angle),
+    transparent 0%,
+    transparent 70%,
+    #B0D7F9 80%,
+    #ffffff 85%,
+    #1744FF 90%,
+    transparent 100%
+  );
+  animation: shine-rotate 2.4s linear infinite;
+  z-index: -1;
+}
+
+.shimmer-border::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: #0D1350;
+  z-index: -1;
+}
+
+:root {
+  --color-primary: #1744FF;
+  --color-secondary: #0D1350;
+  --color-accent: #B0D7F9;
+  --color-base: #FEFDFA;
+}
+
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-base: var(--color-base);
+  --font-sans: var(--font-gotham);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #1744FF;
+    --color-secondary: #0D1350;
+    --color-accent: #B0D7F9;
+    --color-base: #FEFDFA;
+  }
+}
