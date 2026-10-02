@@ -3,125 +3,55 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import abhibus from "@/assets/logos/brands/Abhibus.png";
-import monster from "@/assets/logos/brands/monster.png";
-import predator from "@/assets/logos/brands/predator.png";
-import viberse from "@/assets/logos/brands/viberse.png";
-import qoneqt from "@/assets/logos/brands/qoneqt.png";
-import polkapop from "@/assets/logos/brands/polkapop.png";
-import denver from "@/assets/logos/brands/dristhi.png";
-import drishti from "@/assets/logos/brands/dristhi.png";
-import hilaryrhoda from "@/assets/logos/brands/hilaryrhoda.jpeg";
-import fancode from "@/assets/logos/brands/fancode.png";
-import unacademy from "@/assets/logos/brands/unacademy.png";
-import redbull from "@/assets/logos/brands/redbull.png";
-import burgersingh from "@/assets/logos/brands/burgersingh.png";
+import indmoney from "@/assets/logos/Influencer-brand-logos/INDmoney.png";
+import slice from "@/assets/logos/Influencer-brand-logos/Slice.png";
+import vyapar from "@/assets/logos/Influencer-brand-logos/Vyapar.png";
+import polaris from "@/assets/logos/Influencer-brand-logos/Polaris.png";
+import newton from "@/assets/logos/Influencer-brand-logos/Newton.png";
+import abhibus from "@/assets/logos/Influencer-brand-logos/Abhibus.png";
 
 const TESTIMONIALS = [
     {
         quote:
-            "Brndfy helped us connect with students across campuses, turning travel into a lifestyle choice for youth communities.",
-        name: "Senior Marketing Manager",
+            "Everything about the campaign lived in a shared sheet and doc, always up to date. We never had to ask for a status update. We just opened the link.",
+        name: "Influencer Marketing Manager",
+        brand: "INDMONEY",
+        logo: indmoney,
+    },
+    {
+        quote:
+            "They took the campaign from creator selection to final posting without us having to chase anything. Our team stayed on the brief while they handled the rest.",
+        name: "Senior Manager, Brand & Influencer Marketing",
+        brand: "SLICE UPI & CREDIT CARD",
+        logo: slice,
+    },
+    {
+        quote:
+            "The creator rates they shared were the real ones, with no inflated commercials. That transparency is rare in this space, and it made our budgeting very simple.",
+        name: "Growth Marketing Lead",
+        brand: "VYAPAR APP",
+        logo: vyapar,
+    },
+    {
+        quote:
+            "Coordination between our team and the creators was smooth. Feedback reached creators quickly, revisions came back on time, and nothing got lost in between.",
+        name: "Associate Brand Manager",
+        brand: "POLARIS SCHOOL OF TECHNOLOGY",
+        logo: polaris,
+    },
+    {
+        quote:
+            "Creator lists, deliverables, payment status: whatever we needed was already updated in the sheet. Working with them felt organised and predictable.",
+        name: "Performance & Influencer Marketing Lead",
+        brand: "NEWTON SCHOOL OF TECHNOLOGY",
+        logo: newton,
+    },
+    {
+        quote:
+            "Honest pricing, clear communication and a team that follows through. It felt like working with our own in-house team, not an external agency.",
+        name: "Head of Digital Marketing",
         brand: "ABHIBUS",
         logo: abhibus,
-    },
-    {
-        quote:
-            "Their influencer onboarding and campaign execution gave our brand a fresh, authentic voice that resonated with young audiences.",
-        name: "Brand Partnerships & Alliances Head",
-        brand: "HILARY RHODHA",
-        logo: hilaryrhoda,
-    },
-    {
-        quote:
-            "Market Mafiaa scaled our campus presence like never before - Brndfy continues to amplify that energy with measurable impact.",
-        name: "Brand Manager",
-        brand: "MONSTER ENERGY DRINKS",
-        logo: monster,
-    },
-    {
-        quote:
-            "Through ethical marketing and youth engagement, Brndfy positioned us as the go-to choice for aspirants, building trust and credibility.",
-        name: "Growth Manager",
-        brand: "DRISHTI IAS",
-        logo: drishti,
-    },
-    {
-        quote:
-            "The team's ROI-driven campaigns ensured our brand stood out in competitive student markets, with real results to show.",
-        name: "Associate Brand Manager",
-        brand: "PREDATOR ENERGY DRINKS",
-        logo: predator,
-    },
-    {
-        quote:
-            "Brndfy's social media strategies helped us build vibrant online communities, driving both engagement and conversions.",
-        name: "Marketing Manager",
-        brand: "VIBERSE",
-        logo: viberse,
-    },
-    {
-        quote:
-            "Their talent management and influencer partnerships gave our platform authentic reach among Gen Z audiences.",
-        name: "Senior Marketing Manager",
-        brand: "QONEQT",
-        logo: qoneqt,
-    },
-    {
-        quote:
-            "Brndfy's youth-first campaigns brought sports closer to students, creating loyal fan communities across campuses.",
-        name: "Brand Partnerships & Alliances Head",
-        brand: "FANCODE",
-        logo: fancode,
-    },
-    {
-        quote:
-            "With structured campus branding and ethical marketing, Brndfy strengthened our presence among learners nationwide.",
-        name: "Brand Manager",
-        brand: "UNACADEMY",
-        logo: unacademy,
-    },
-    {
-        quote:
-            "The team's creative activations and transparent processes made our campaigns both impactful and trustworthy.",
-        name: "Growth Manager",
-        brand: "OSATA",
-        logo: null,
-    },
-    {
-        quote:
-            "Brndfy energized our campus activations, blending influencer power with measurable ROI - a true partner in youth engagement.",
-        name: "Senior Marketing Manager",
-        brand: "RED BULL",
-        logo: redbull,
-    },
-    {
-        quote:
-            "Their influencer onboarding and social media execution gave our brand a refreshing identity among students.",
-        name: "Associate Brand Manager",
-        brand: "POLKA POP",
-        logo: polkapop,
-    },
-    {
-        quote:
-            "Brndfy's ethical marketing approach ensured our campaigns built trust while delivering strong results.",
-        name: "Marketing Manager",
-        brand: "ENVY",
-        logo: null,
-    },
-    {
-        quote:
-            "From campus branding to influencer management, Brndfy helped us stay relevant and aspirational for young audiences.",
-        name: "Brand Manager",
-        brand: "DENVER",
-        logo: null,
-    },
-    {
-        quote:
-            "Their creative campus activations turned food into an experience, driving both footfall and brand love.",
-        name: "Brand Partnerships & Alliances Head",
-        brand: "BURGER SINGH",
-        logo: burgersingh,
     },
 ];
 
