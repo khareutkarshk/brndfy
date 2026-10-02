@@ -23,7 +23,7 @@ function Hero() {
                 <div className='flex flex-col gap-6 max-w-xl lg:max-w-3xl w-full'>
                     {/* Eyebrow */}
                     <p className='text-xs sm:text-sm tracking-widest uppercase text-white/70 font-normal'>
-                        India&apos;s Youth Activation Engine
+                        FINANCE FIRST - INFLUENCER & TALENT MANAGEMENT COMPANY
                     </p>
 
                     {/* Heading */}
@@ -33,7 +33,7 @@ function Hero() {
 
                     {/* Body */}
                     <p className='text-sm sm:text-base lg:text-lg font-normal text-white/70 leading-relaxed '>
-                        We are a marketing agency that bridges brands and youth through influencer marketing, campus branding, and immersive on-ground activations.
+                        We connect brands with the right creators in Finance and Edutainment <br /> to drive real, measurable results.
                     </p>
 
                     {/* CTAs */}
