@@ -13,8 +13,8 @@ const About = () => {
                         </span>
                     </div>
                     <div className="hidden lg:block mt-auto">
-                        <p className="text-sm font-bold leading-tight text-secondary">
-                            Culture first. Creators aligned. Built to scale.
+                        <p className="text-lg font leading-tight text-secondary">
+                            Culture first. Creators aligned.<br /> Built to scale.
                         </p>
                     </div>
                 </div>
@@ -22,19 +22,20 @@ const About = () => {
                 {/* Right Side Content */}
                 <div className="lg:col-span-8 flex flex-col gap-8 lg:gap-10">
                     <div className="flex flex-col">
-                        <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-normal leading-[1.2] text-primary tracking-tight">
-                            We&apos;re Brndfy - a youth-first, data-driven marketing collective. Built for{' '}
+                        <h2 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-normal leading-[1.2] text-primary tracking-tight">
+                            We&apos;re Brndfy Media - a Finance First <br /> Influencer Marketing and Talent Management Company. Built for{' '}
                             <span className="bg-primary rounded-md font-normal text-white px-2 italic font-serif inline box-decoration-clone">
-                                campus culture and real conversations.
+                            both sides of the deal.<br />
                             </span>
                         </h2>
                     </div>
 
                     <div className="flex flex-col">
-                        <p className="text-2xl sm:text-2xl lg:text-4xl xl:text-5xl font-normal leading-[1.2] text-primary tracking-tight">
-                            Inspired by the raw energy of India&apos;s student ecosystems, we know millions of voices hold infinite stories. Our job is to cut through{' '}
-                            <span className="bg-primary rounded-md font-normal text-white px-2 italic font-serif inline box-decoration-clone">the hype, the noise, &</span>{' '}
-                            <span className="bg-primary rounded-md font-normal text-white px-2 italic font-serif inline box-decoration-clone">the gimmicks</span> and deliver campaigns.
+                        <p className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-normal leading-[1.2] text-primary tracking-tight">
+                            <br />For{' '}
+                            <span className="bg-primary rounded-md font-normal text-white px-2 italic font-serif inline box-decoration-clone">brands,</span>
+                            we deliver measurable ROI <br/>on every campaign. <br/> For{' '}
+                            <span className="bg-primary rounded-md font-normal text-white px-2 italic font-serif inline box-decoration-clone">creators,</span> we secure fair contracts, timely payouts and long-term earning power.
                         </p>
                     </div>
                 </div>

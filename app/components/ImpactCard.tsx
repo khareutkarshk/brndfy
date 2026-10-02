@@ -24,6 +24,7 @@ export function ImpactCard({ stat }: { stat: ImpactStat }) {
                     stat.icon
                 )}
             </div>
+            
             {/* Value */}
             <p className="text-3xl sm:text-4xl lg:text-5xl font-bold italic text-primary leading-none tracking-tight">
                 {stat.value}
