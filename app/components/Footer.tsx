@@ -11,7 +11,7 @@ const Footer = () => {
     ];
 
     const socialLinks = [
-        { name: "Instagram", href: "https://www.instagram.com/brndfy/" },
+        { name: "Instagram", href: "https://www.instagram.com/brndfymedia/" },
         { name: "LinkedIn", href: "https://www.linkedin.com/company/marketmafiaa/posts/?feedView=all" },
         { name: "Whatsapp", href: "https://wa.me/919690752035" },
     ];
@@ -49,28 +49,40 @@ const Footer = () => {
 
                         {/* Tagline */}
                         <p className="text-white text-sm leading-relaxed">
-                            We turn creators into catalysts and campuses
-                            <br />into brand playgrounds.
+                            Building Culture.
+                            <br />Not Just Campaigns.
                         </p>
 
                         {/* Address */}
                         <p className="text-white text-sm leading-relaxed">
-                            Knowledge Park II, Greater Noida
+                            J-27, Gama -II, Greater Noida, 201308
                             <br />Uttar Pradesh, India
                         </p>
 
                         {/* Contact */}
                         <div className="flex flex-col gap-2 mt-2">
-                            <a
-                                href="mailto:vikash@brndfy.com"
-                                className="inline-flex items-center gap-2 text-white text-sm border border-white/10 rounded-full px-4 py-1.5 w-fit hover:text-white hover:border-white/30 transition-colors"
-                            >
-                                vikash@brndfy.com
-                            </a>
-                            <div className="flex items-center gap-2 flex-wrap">
+                            {/* Emails */}
+                            <div className="flex flex-row gap-2 flex-nowrap">
+                                <a
+                                    href="mailto:vikash@brndfy.com"
+                                    className="inline-flex items-center gap-2 text-white text-sm border border-white/10 rounded-full px-4 py-1.5 w-fit hover:text-white hover:border-white/30 transition-colors"
+                                >
+                                    vikash@brndfy.com
+                                </a>
+
+                                <a
+                                    href="mailto:business@brndfy.com"
+                                    className="inline-flex items-center gap-2 text-white text-sm border border-white/10 rounded-full px-4 py-1.5 w-fit hover:text-white hover:border-white/30 transition-colors"
+                                >
+                                    business@brndfy.com
+                                </a>
+                            </div>
+
+                            {/* Contact Number */}
+                            <div>
                                 <a
                                     href="tel:+919690752035"
-                                    className="text-white text-sm border border-white/10 rounded-full px-4 py-1.5 hover:text-white hover:border-white/30 transition-colors"
+                                    className="inline-flex items-center gap-2 text-white text-sm border border-white/10 rounded-full px-4 py-1.5 w-fit hover:text-white hover:border-white/30 transition-colors"
                                 >
                                     +919690752035
                                 </a>

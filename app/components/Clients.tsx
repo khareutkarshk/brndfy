@@ -3,45 +3,26 @@
 import React, { useState } from "react";
 import Image, { StaticImageData } from "next/image";
 
-import Abhibus from "@/assets/logos/brands/Abhibus.png";
-import Abros from "@/assets/logos/brands/abros.jpeg";
-import AmarUjala from "@/assets/logos/brands/amarujala.png";
-import AmericanWaffle from "@/assets/logos/brands/americanwaffle.jpeg";
-import BurgerSingh from "@/assets/logos/brands/burgersingh.png";
-import Cadbury from "@/assets/logos/brands/cadbury.png";
-import CampusTimes from "@/assets/logos/brands/campustimes.png";
-import CocaCola from "@/assets/logos/brands/cocacola.jpeg";
-import CoolbergBlack from "@/assets/logos/brands/CoolbergLogo_black.png";
-import Drishti from "@/assets/logos/brands/dristhi.png";
-import Emoi from "@/assets/logos/brands/emoi.png";
-import Evepaper from "@/assets/logos/brands/evepaper.png";
-import Extracts from "@/assets/logos/brands/extracts.png";
-import Fancode from "@/assets/logos/brands/fancode.png";
-import HilaryRhoda from "@/assets/logos/brands/hilaryrhoda.jpeg";
-import Ixigo from "@/assets/logos/brands/ixigo.jpeg";
-import JainShikanji from "@/assets/logos/brands/jainshikanji.png";
-import JioSavaan from "@/assets/logos/brands/jiosavaan.png";
-import Midnight from "@/assets/logos/brands/midnight.png";
-import Monster from "@/assets/logos/brands/monster.png";
-import Ocean from "@/assets/logos/brands/ocean.png";
-import Osata from "@/assets/logos/brands/osata.png";
-import Outdefine from "@/assets/logos/brands/outdefine.png";
-import PolkaPop from "@/assets/logos/brands/polkapop.png";
-import Predator from "@/assets/logos/brands/predator.png";
-import Qelica from "@/assets/logos/brands/qelica.png";
-import Qoneqt from "@/assets/logos/brands/qoneqt.png";
-import Rabrees from "@/assets/logos/brands/rabrees.png";
-import RedBull from "@/assets/logos/brands/redbull.png";
-import SevaHub from "@/assets/logos/brands/sevahub.png";
-import SkillArena from "@/assets/logos/brands/skillarena.png";
-import Smaaash from "@/assets/logos/brands/smaaash.jpeg";
-import StockEdge from "@/assets/logos/brands/stockedge.jpeg";
-import TFE from "@/assets/logos/brands/tfe.jpeg";
-import TheWaffleCo from "@/assets/logos/brands/thewaffleco.png";
-import Unacademy from "@/assets/logos/brands/unacademy.png";
-import Unstop from "@/assets/logos/brands/unstop.png";
-import VedicJal from "@/assets/logos/brands/vedicjal.png";
-import Viberse from "@/assets/logos/brands/viberse.png";
+import INDmoney from "@/assets/logos/Influencer-brand-logos/INDmoney.png";
+import Abhibus from "@/assets/logos/Influencer-brand-logos/Abhibus.png";
+import AU from "@/assets/logos/Influencer-brand-logos/AU.png";
+import HilaryRhoda from "@/assets/logos/Influencer-brand-logos/Hilary Rhoda.png";
+import Drishti from "@/assets/logos/Influencer-brand-logos/Drishti.png";
+import Monster from "@/assets/logos/Influencer-brand-logos/Monster.png";
+import Nescafe from "@/assets/logos/Influencer-brand-logos/Nescafe.png";
+import Newton from "@/assets/logos/Influencer-brand-logos/Newton.png";
+import Polaris from "@/assets/logos/Influencer-brand-logos/Polaris.png";
+import Predator from "@/assets/logos/Influencer-brand-logos/Predator.png";
+import Qonect from "@/assets/logos/Influencer-brand-logos/Qonect.png";
+import Slice from "@/assets/logos/Influencer-brand-logos/Slice.png";
+import Scalar from "@/assets/logos/Influencer-brand-logos/Scalar.png";
+import Stride from "@/assets/logos/Influencer-brand-logos/Stride.png";
+import Vedam from "@/assets/logos/Influencer-brand-logos/Vedam.png";
+import Vyapar from "@/assets/logos/Influencer-brand-logos/Vyapar.png";
+import NIAT from "@/assets/logos/Influencer-brand-logos/NIAT.png";
+import Viberse from "@/assets/logos/Influencer-brand-logos/Viberse.png";
+import Porter from "@/assets/logos/Influencer-brand-logos/Porter.png";
+
 
 import Bg1 from "@/assets/logos/brands/bg1.png";
 import Bg2 from "@/assets/logos/brands/bg2.png";
@@ -57,45 +38,25 @@ interface Brand {
 }
 
 const BRAND_LIST: Omit<Brand, "bg">[] = [
+    { name: "INDmoney", logo: INDmoney },
+    { name: "Vyapar", logo: Vyapar },
+    { name: "Slice", logo: Slice },
+    { name: "AU Small Finance Bank", logo: AU },
+    { name: "Porter", logo: Porter },
+    { name: "Newton School of Technology", logo: Newton },
+    { name: "Polaris School of Technology", logo: Polaris },
+    { name: "Scaler School of Technology", logo: Scalar },
+    { name: "Stride School of Business", logo: Stride },
+    { name: "Vedam School of Technology", logo: Vedam },
+    { name: "NIAT", logo: NIAT },
     { name: "Abhibus", logo: Abhibus },
-    { name: "Coca-Cola", logo: CocaCola },
-    { name: "Abros", logo: Abros },
-    { name: "Amar Ujala", logo: AmarUjala },
-    { name: "Monster Energy", logo: Monster },
-    { name: "Qoneqt", logo: Qoneqt },
-    { name: "Red Bull", logo: RedBull },
     { name: "Hilary Rhoda", logo: HilaryRhoda },
-    { name: "Ixigo", logo: Ixigo },
-    { name: "Coolberg", logo: CoolbergBlack },
-    { name: "Cadbury", logo: Cadbury },
-    { name: "Unacademy", logo: Unacademy },
-    { name: "JioSavaan", logo: JioSavaan },
-    { name: "Unstop", logo: Unstop },
-    { name: "Smaaash", logo: Smaaash },
-    { name: "Stock Edge", logo: StockEdge },
-    { name: "Emoi", logo: Emoi },
-    { name: "American Waffle", logo: AmericanWaffle },
-    { name: "Fancode", logo: Fancode },
-    { name: "TFE", logo: TFE },
-    { name: "Qelica", logo: Qelica },
-    { name: "Skill Arena", logo: SkillArena },
-    { name: "Predator", logo: Predator },
-    { name: "Polka Pop", logo: PolkaPop },
-    { name: "Osata", logo: Osata },
-    { name: "Outdefine", logo: Outdefine },
+    { name: "Drishti", logo: Drishti },
+    { name: "Monster Energy", logo: Monster },
+    { name: "Nescafe", logo: Nescafe },
+    { name: "Predator Energy", logo: Predator },
+    { name: "Qonect", logo: Qonect },
     { name: "Viberse", logo: Viberse },
-    { name: "The Waffle Co.", logo: TheWaffleCo },
-    { name: "Drishti IAS", logo: Drishti },
-    { name: "Burger Singh", logo: BurgerSingh },
-    { name: "Extracts", logo: Extracts },
-    { name: "Midnight", logo: Midnight },
-    { name: "Ocean", logo: Ocean },
-    { name: "Rabrees", logo: Rabrees },
-    { name: "Seva Hub", logo: SevaHub },
-    { name: "Evepaper", logo: Evepaper },
-    { name: "Jain Shikanji", logo: JainShikanji },
-    { name: "Campus Times", logo: CampusTimes },
-    { name: "Vedic Jal", logo: VedicJal },
 ];
 
 // Assign a bg deterministically by index so it's stable across renders
@@ -203,4 +164,3 @@ const Clients = () => {
 };
 
 export default Clients;
-

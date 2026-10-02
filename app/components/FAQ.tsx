@@ -5,34 +5,34 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const FAQS = [
     {
-        question: "How do you engage students and youth communities through campus branding?",
+        question: "How do you find the right creators for our brand?",
         answer:
-            "We design on-ground activations, ambassador programs, and interactive campaigns that feel native to campus culture, ensuring authentic engagement rather than forced promotion.",
+            "We shortlist creators based on your audience, niche, geography and campaign goal. We check audience quality and past content before any profile reaches you.",
     },
     {
-        question: "What's your process for onboarding and managing influencers or creators?",
+        question: "What does your end-to-end campaign process look like?",
         answer:
-            "We identify the right-fit creators, align them with brand goals, handle contracts and communication, and monitor performance to ensure smooth execution.",
+            "We start from your objective, then handle creator selection, briefs and scripts, approvals, agreements, payments and publishing. You stay updated at every stage without chasing anyone.",
     },
     {
-        question: "How do you design social media campaigns that deliver measurable impact?",
+        question: "How do you make sure creator pricing is fair?",
         answer:
-            "We combine creative storytelling with data-driven targeting, clear KPIs, and continuous optimization to maximize reach, engagement, and conversions.",
+            "We negotiate creator rates directly and share the real commercials with you. There are no inflated quotes, so you know exactly where your budget is going.",
     },
     {
-        question: "What steps do you take to ensure ethical marketing practices?",
+        question: "How do you track and report campaign performance?",
         answer:
-            "We prioritize transparency, honest messaging, compliant disclosures, and audience-first communication in every campaign.",
+            "Every campaign runs on a shared sheet and doc that we keep updated throughout. After publishing, we report reach, views and engagement against your objective.",
     },
     {
-        question: "How do you track ROI and performance across campaigns?",
+        question: "What does your talent management service include?",
         answer:
-            "We track performance using defined KPIs, real-time analytics, and detailed reporting dashboards to measure reach, engagement, and conversions.",
+            "We represent creators from onboarding to brand deals: profile positioning, brand matching, rate negotiation and payment follow-ups. Creators focus on content while we handle the business side.",
     },
     {
-        question: "Can you customize strategies for different brands and industries?",
+        question: "How do creators get brand collaborations through you?",
         answer:
-            "Yes. We tailor strategies based on industry, audience behavior, brand goals, and budget to ensure maximum relevance and impact.",
+            "Creators on our roster are matched to campaigns that fit their niche and audience. We manage the brief, rates and coordination so both sides know what is expected before work begins.",
     },
 ];
 
