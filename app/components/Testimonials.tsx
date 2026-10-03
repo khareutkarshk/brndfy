@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useReducedMotion, type PanInfo } from "framer-motion";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
+import SplitReveal from "./fx/SplitReveal";
 import indmoney from "@/assets/logos/Influencer-brand-logos/INDmoney.png";
 import slice from "@/assets/logos/Influencer-brand-logos/Slice.png";
 import vyapar from "@/assets/logos/Influencer-brand-logos/Vyapar.png";
@@ -12,352 +14,167 @@ import abhibus from "@/assets/logos/Influencer-brand-logos/Abhibus.png";
 
 const TESTIMONIALS = [
     {
-        quote:
-            "Everything about the campaign lived in a shared sheet and doc, always up to date. We never had to ask for a status update. We just opened the link.",
+        quote: "Everything about the campaign lived in a shared sheet and doc, always up to date. We never had to ask for a status update.",
         name: "Influencer Marketing Manager",
-        brand: "INDMONEY",
+        brand: "INDmoney",
         logo: indmoney,
     },
     {
-        quote:
-            "They took the campaign from creator selection to final posting without us having to chase anything. Our team stayed on the brief while they handled the rest.",
+        quote: "They took the campaign from creator selection to final posting without us having to chase anything.",
         name: "Senior Manager, Brand & Influencer Marketing",
-        brand: "SLICE UPI & CREDIT CARD",
+        brand: "slice",
         logo: slice,
     },
     {
-        quote:
-            "The creator rates they shared were the real ones, with no inflated commercials. That transparency is rare in this space, and it made our budgeting very simple.",
+        quote: "The creator rates they shared were the real ones, with no inflated commercials. That transparency is rare in this space.",
         name: "Growth Marketing Lead",
-        brand: "VYAPAR APP",
+        brand: "Vyapar",
         logo: vyapar,
     },
     {
-        quote:
-            "Coordination between our team and the creators was smooth. Feedback reached creators quickly, revisions came back on time, and nothing got lost in between.",
+        quote: "Feedback reached creators quickly, revisions came back on time, and nothing got lost in between.",
         name: "Associate Brand Manager",
-        brand: "POLARIS SCHOOL OF TECHNOLOGY",
+        brand: "Polaris School of Technology",
         logo: polaris,
     },
     {
-        quote:
-            "Creator lists, deliverables, payment status: whatever we needed was already updated in the sheet. Working with them felt organised and predictable.",
+        quote: "Creator lists, deliverables, payment status: whatever we needed was already in the sheet. Organised and predictable.",
         name: "Performance & Influencer Marketing Lead",
-        brand: "NEWTON SCHOOL OF TECHNOLOGY",
+        brand: "Newton School of Technology",
         logo: newton,
     },
     {
-        quote:
-            "Honest pricing, clear communication and a team that follows through. It felt like working with our own in-house team, not an external agency.",
+        quote: "Honest pricing, clear communication and a team that follows through. It felt like our own in-house team.",
         name: "Head of Digital Marketing",
-        brand: "ABHIBUS",
+        brand: "AbhiBus",
         logo: abhibus,
     },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-const wrap = (i: number) =>
-    ((i % TESTIMONIALS.length) + TESTIMONIALS.length) % TESTIMONIALS.length;
+// Resting pose for the first few cards in the pile
+const POSE = [
+    { y: 0, scale: 1, rotate: 0, opacity: 1 },
+    { y: 22, scale: 0.95, rotate: -3.5, opacity: 1 },
+    { y: 44, scale: 0.9, rotate: 3, opacity: 1 },
+    { y: 60, scale: 0.86, rotate: 0, opacity: 0 },
+];
 
-// ─── Testimonial Card (static inner content) ─────────────────────────────────
-const CardContent = ({
-    quote,
-    name,
-    brand,
-    logo,
-}: {
-    quote: string;
-    name: string;
-    brand: string;
-    logo: Parameters<typeof Image>[0]["src"] | null;
-}) => (
-    <>
-        {/* Quote SVG */}
-        <div className="self-start">
-            <svg width="80" height="64" viewBox="0 0 125 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M98.3953 41.2017C113.176 42.0601 125 54.9356 125 70.3863C125 86.6953 112.331 100 96.2838 100C80.2365 100 67.1453 86.6953 67.1453 70.3863C67.1453 66.5236 67.5676 63.0901 69.2568 59.6567C69.679 58.3691 70.1013 57.5107 70.5236 56.2232L96.2838 0L108.108 0L98.3953 41.2017ZM31.25 41.2017C46.4527 42.0601 58.277 54.9356 58.277 70.3863C58.277 86.6953 45.1858 100 29.1385 100C13.0912 100 0 86.6953 0 70.3863C0 65.2361 1.26689 60.515 3.80067 56.2232L29.1385 0L41.3851 0L31.25 41.2017Z" fill="#1744FF" />
-            </svg>
-        </div>
-        {/* Content */}
-        <div className="self-end pl-16 sm:pl-20">
-            <p className="text-secondary text-sm leading-relaxed mb-6">{quote}</p>
-            <div className="flex items-center gap-3 pt-4 border-t border-secondary/10">
-                {logo ? (
-                    <div className="relative w-12 h-8 shrink-0">
-                        <Image src={logo} alt={brand} fill className="object-contain" sizes="48px" />
-                    </div>
-                ) : (
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <span className="text-primary text-xs font-bold">{brand[0]}</span>
-                    </div>
-                )}
-                <div>
-                    <p className="text-sm font-bold text-secondary leading-tight">{name}</p>
-                    <p className="text-xs text-secondary/50 tracking-widest uppercase mt-0.5">{brand}</p>
-                </div>
-            </div>
-        </div>
-    </>
-);
-
-// ─── Nav Button ───────────────────────────────────────────────────────────────
-const NavBtn = ({
-    onClick,
-    dir,
-    label,
-}: {
-    onClick: () => void;
-    dir: "prev" | "next";
-    label: string;
-}) => (
-    <button
-        onClick={onClick}
-        aria-label={label}
-        className="shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-secondary/20 bg-white flex items-center justify-center text-secondary hover:bg-secondary hover:text-white hover:border-secondary active:scale-95 transition-all duration-200 shadow-sm z-10"
-    >
-        <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            {dir === "prev" ? (
-                <path d="M15 18l-6-6 6-6" />
-            ) : (
-                <path d="M9 18l6-6-6-6" />
-            )}
-        </svg>
-    </button>
-);
-
-// ─── Slot positions for framer-motion ─────────────────────────────────────────
-// Each card slot is described by { x, scale, opacity, zIndex }.
-// "offLeft" / "offRight" are the positions cards enter from / exit to.
-type SlotStyle = { x: string; scale: number; opacity: number; zIndex: number; boxShadow: string };
-
-const SLOTS: Record<string, SlotStyle> = {
-    offLeft:  { x: "calc(var(--left-x)  - var(--card-w))", scale: 0.82, opacity: 0, zIndex: 0, boxShadow: "none" },
-    left:     { x: "var(--left-x)",                         scale: 0.88, opacity: 0.4, zIndex: 1, boxShadow: "none" },
-    center:   { x: "var(--center-x)",                       scale: 1,    opacity: 1,   zIndex: 10, boxShadow: "0 6px 0 0 #1744FF" },
-    right:    { x: "var(--right-x)",                        scale: 0.88, opacity: 0.4, zIndex: 1, boxShadow: "none" },
-    offRight: { x: "calc(var(--right-x) + var(--card-w))", scale: 0.82, opacity: 0, zIndex: 0, boxShadow: "none" },
-};
-
-// When going NEXT (direction = 1): left exits offLeft, center→left, right→center, new enters from offRight→right
-// When going PREV (direction = -1): right exits offRight, center→right, left→center, new enters from offLeft→left
-
-const slotForPosition = (
-    pos: "left" | "center" | "right",
-    direction: number,
-    phase: "initial" | "animate" | "exit"
-): SlotStyle => {
-    if (phase === "animate") return SLOTS[pos];
-
-    if (direction === 1) {
-        // clicking NEXT — everything shifts left
-        if (phase === "initial") {
-            if (pos === "left") return SLOTS.left;      // was center, already in place
-            if (pos === "center") return SLOTS.right;    // was right, starts at right
-            if (pos === "right") return SLOTS.offRight;  // new card enters from offRight
-        }
-        if (phase === "exit") {
-            if (pos === "left") return SLOTS.offLeft;    // exits to offLeft
-            if (pos === "center") return SLOTS.left;     // moves to left
-            if (pos === "right") return SLOTS.center;    // moves to center
-        }
-    } else {
-        // clicking PREV — everything shifts right
-        if (phase === "initial") {
-            if (pos === "right") return SLOTS.right;     // was center, already in place
-            if (pos === "center") return SLOTS.left;     // was left, starts at left
-            if (pos === "left") return SLOTS.offLeft;    // new card enters from offLeft
-        }
-        if (phase === "exit") {
-            if (pos === "right") return SLOTS.offRight;  // exits to offRight
-            if (pos === "center") return SLOTS.right;    // moves to right
-            if (pos === "left") return SLOTS.center;     // moves to center
-        }
-    }
-    return SLOTS[pos];
-};
-
-const springTransition = { type: "spring" as const, stiffness: 260, damping: 30, mass: 1 };
-
-// ─── Main Component ───────────────────────────────────────────────────────────
-const AUTO_PLAY_MS = 3000;
-
+/**
+ * Chapter eight. Partner quotes as a physical deck: drag the top card away
+ * (or use the arrows) and it returns to the back of the pile.
+ */
 const Testimonials = () => {
-    const [[current, direction], setSlide] = useState([0, 0]);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [layout, setLayout] = useState({ cardW: 0, centerX: 0, leftX: 0, rightX: 0 });
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
-    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const reduce = useReducedMotion();
+    const [order, setOrder] = useState(() => TESTIMONIALS.map((_, i) => i));
+    const [leaving, setLeaving] = useState<{ id: number; dir: 1 | -1 } | null>(null);
 
-    const prevIdx = wrap(current - 1);
-    const nextIdx = wrap(current + 1);
+    const next = useCallback(
+        (dir: 1 | -1 = 1) => {
+            if (leaving) return;
+            if (dir === -1) {
+                // Bring the last card back on top
+                setOrder((o) => [o[o.length - 1], ...o.slice(0, -1)]);
+                return;
+            }
+            setLeaving({ id: order[0], dir });
+        },
+        [leaving, order],
+    );
 
-    const paginate = useCallback((dir: 1 | -1) => {
-        if (isAnimating) return;
-        setIsAnimating(true);
-        setSlide(([prev]) => [wrap(prev + dir), dir]);
-    }, [isAnimating]);
-
-    // Auto-scroll: advances every AUTO_PLAY_MS unless paused or animating
-    useEffect(() => {
-        if (isPaused) return;
-
-        timerRef.current = setTimeout(() => {
-            paginate(1);
-        }, AUTO_PLAY_MS);
-
-        return () => {
-            if (timerRef.current) clearTimeout(timerRef.current);
-        };
-    }, [current, isPaused, paginate]);
-
-    const computeLayout = useCallback(() => {
-        const el = containerRef.current;
-        if (!el) return;
-        const containerW = el.clientWidth;
-        const isMobile = window.innerWidth < 640;
-
-        if (isMobile) {
-            const cardW = containerW * 0.85;
-            const centerX = (containerW - cardW) / 2;
-            setLayout({
-                cardW,
-                centerX,
-                leftX: -cardW,
-                rightX: containerW,
-            });
-        } else {
-            const cardW = Math.min(containerW * 0.5, 700);
-            const gap = 24;
-            const centerX = (containerW - cardW) / 2;
-            const leftX = centerX - cardW - gap;
-            const rightX = centerX + cardW + gap;
-            setLayout({ cardW, centerX, leftX, rightX });
+    const onDragEnd = (_: unknown, info: PanInfo) => {
+        if (Math.abs(info.offset.x) > 110 || Math.abs(info.velocity.x) > 600) {
+            if (!leaving) setLeaving({ id: order[0], dir: info.offset.x > 0 ? 1 : -1 });
         }
-    }, []);
+    };
 
-    useEffect(() => {
-        computeLayout();
-        window.addEventListener("resize", computeLayout);
-        return () => window.removeEventListener("resize", computeLayout);
-    }, [computeLayout]);
-
-    // Build the 3 visible cards (or 1 on mobile)
-    const cards: { idx: number; pos: "left" | "center" | "right" }[] = [
-        { idx: prevIdx, pos: "left" },
-        { idx: current, pos: "center" },
-        { idx: nextIdx, pos: "right" },
-    ];
+    const current = TESTIMONIALS[order[0]];
 
     return (
-        <section
-            id="testimonials"
-            className="relative rounded-2xl py-16 sm:py-20 overflow-hidden"
-        >
-            {/* ── Header ── */}
-            <div className="mb-10 sm:mb-14 px-6 sm:px-12 lg:px-20">
-                <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-secondary/50 uppercase block mb-3">
-                    /Testimonials
-                </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary leading-tight tracking-tight">
-                    What Our Partners
-                </h2>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-normal leading-tight tracking-tight">
-                    <em className="font-serif italic text-primary">Are Saying</em>
-                </h2>
-            </div>
+        <section id="testimonials" className="relative overflow-hidden bg-ink px-4 py-24 sm:px-10 lg:px-16 lg:py-32">
+            <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-16 lg:grid-cols-12">
+                <div className="lg:col-span-5">
+                    <SplitReveal className="max-w-[14ch] font-display text-[clamp(2rem,4.4vw,4rem)] font-light leading-[1.05] tracking-[-0.035em] text-paper">
+                        In their <span className="font-semibold">own words.</span>
+                    </SplitReveal>
+                    <p className="mt-6 max-w-[40ch] text-lg text-mute">What marketing teams say after a campaign wraps.</p>
 
-            {/* ── Carousel ── */}
-            <div
-                className=" sm:px-12 lg:px-20"
-                onMouseEnter={() => setIsPaused(true)}
-                onMouseLeave={() => setIsPaused(false)}
-                onTouchStart={() => setIsPaused(true)}
-                onTouchEnd={() => setIsPaused(false)}
-            >
-                <div
-                    ref={containerRef}
-                    className="relative w-full overflow-hidden"
-                    style={{
-                        height: "24rem",
-                        ["--card-w" as string]: `${layout.cardW}px`,
-                        ["--center-x" as string]: `${layout.centerX}px`,
-                        ["--left-x" as string]: `${layout.leftX}px`,
-                        ["--right-x" as string]: `${layout.rightX}px`,
-                    }}
-                >
-                    {/* Desktop nav buttons — inside the track so top-1/2 aligns to card height */}
-                    <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 left-0 z-20">
-                        <NavBtn onClick={() => paginate(-1)} dir="prev" label="Previous testimonial" />
+                    <div className="mt-10 flex items-center gap-4">
+                        <button
+                            onClick={() => next(-1)}
+                            aria-label="Previous testimonial"
+                            className="grid size-12 place-items-center rounded-full border border-paper/20 text-paper transition-colors hover:border-paper/60 active:scale-95"
+                        >
+                            <ArrowLeft weight="bold" className="size-4" />
+                        </button>
+                        <button
+                            onClick={() => next(1)}
+                            aria-label="Next testimonial"
+                            className="grid size-12 place-items-center rounded-full bg-primary text-white transition-colors hover:bg-cobalt-hi active:scale-95"
+                        >
+                            <ArrowRight weight="bold" className="size-4" />
+                        </button>
+                        <p className="ml-2 text-sm text-mute" aria-live="polite">
+                            {current.brand}
+                        </p>
                     </div>
-                    <div className="hidden sm:flex absolute top-1/2 -translate-y-1/2 right-0 z-20">
-                        <NavBtn onClick={() => paginate(1)} dir="next" label="Next testimonial" />
-                    </div>
+                </div>
 
-                    <AnimatePresence
-                        initial={false}
-                        custom={direction}
-                        onExitComplete={() => setIsAnimating(false)}
-                    >
-                        {cards.map(({ idx, pos }) => {
-                            const initial = slotForPosition(pos, direction, "initial");
-                            const animate = slotForPosition(pos, direction, "animate");
-                            const exit = slotForPosition(pos, direction, "exit");
-
+                <div className="relative mx-auto h-[440px] w-full max-w-[560px] sm:h-[420px] lg:col-span-7" onKeyDown={(e) => {
+                    if (e.key === "ArrowRight") next(1);
+                    if (e.key === "ArrowLeft") next(-1);
+                }}>
+                    {order
+                        .slice(0, 4)
+                        .map((id, pos) => ({ id, pos }))
+                        .reverse()
+                        .map(({ id, pos }) => {
+                            const t = TESTIMONIALS[id];
+                            const isTop = pos === 0;
+                            const isLeaving = leaving?.id === id;
+                            const pose = POSE[pos];
                             return (
-                                <motion.div
-                                    key={`${pos}-${idx}`}
-                                    className="absolute top-0 bg-[#E8F3FE] rounded-2xl p-7 sm:p-9 grid grid-rows-[auto_1fr] min-h-72 sm:min-h-80 will-change-transform"
-                                    style={{ width: "var(--card-w)" }}
-                                    initial={{
-                                        x: initial.x,
-                                        scale: initial.scale,
-                                        opacity: initial.opacity,
-                                        zIndex: initial.zIndex,
-                                        boxShadow: initial.boxShadow,
+                                <motion.figure
+                                    key={id}
+                                    tabIndex={isTop ? 0 : -1}
+                                    aria-hidden={!isTop}
+                                    className={`absolute inset-x-0 top-0 flex h-[400px] flex-col justify-between rounded-[28px] p-7 outline-none sm:h-[380px] sm:p-10 ${
+                                        isTop ? "cursor-grab bg-paper text-ink active:cursor-grabbing" : "bg-ink-3 text-paper"
+                                    }`}
+                                    style={{ zIndex: 10 - pos, boxShadow: isTop ? "0 40px 90px -30px rgba(23,68,255,0.6)" : "none" }}
+                                    drag={isTop && !reduce ? "x" : false}
+                                    dragSnapToOrigin
+                                    dragElastic={0.6}
+                                    onDragEnd={isTop ? onDragEnd : undefined}
+                                    initial={false}
+                                    animate={
+                                        isLeaving
+                                            ? { x: leaving.dir * 720, rotate: leaving.dir * 22, opacity: 0 }
+                                            : { x: 0, ...pose }
+                                    }
+                                    transition={{ type: "spring", stiffness: 260, damping: 28 }}
+                                    onAnimationComplete={() => {
+                                        if (isLeaving) {
+                                            setOrder((o) => [...o.slice(1), o[0]]);
+                                            setLeaving(null);
+                                        }
                                     }}
-                                    animate={{
-                                        x: animate.x,
-                                        scale: animate.scale,
-                                        opacity: animate.opacity,
-                                        zIndex: animate.zIndex,
-                                        boxShadow: animate.boxShadow,
-                                    }}
-                                    exit={{
-                                        x: exit.x,
-                                        scale: exit.scale,
-                                        opacity: exit.opacity,
-                                        zIndex: exit.zIndex,
-                                        boxShadow: exit.boxShadow,
-                                    }}
-                                    transition={springTransition}
                                 >
-                                    <CardContent
-                                        quote={TESTIMONIALS[idx].quote}
-                                        name={TESTIMONIALS[idx].name}
-                                        brand={TESTIMONIALS[idx].brand}
-                                        logo={TESTIMONIALS[idx].logo}
-                                    />
-                                </motion.div>
+                                    <blockquote className="font-display text-[clamp(1.25rem,2.1vw,1.7rem)] font-normal leading-[1.3] tracking-[-0.015em]">
+                                        &ldquo;{t.quote}&rdquo;
+                                    </blockquote>
+                                    <figcaption className="flex items-center gap-4">
+                                        <div className="relative size-12 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-ink/10">
+                                            <Image src={t.logo} alt={t.brand} fill sizes="48px" className="object-cover" draggable={false} />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium">{t.name}</p>
+                                            <p className={`text-sm ${isTop ? "text-ink/60" : "text-mute"}`}>{t.brand}</p>
+                                        </div>
+                                    </figcaption>
+                                </motion.figure>
                             );
                         })}
-                    </AnimatePresence>
                 </div>
-            </div>
-
-            {/* ── Mobile nav buttons ── */}
-            <div className="flex sm:hidden justify-end gap-3 mt-6 pr-6">
-                <NavBtn onClick={() => paginate(-1)} dir="prev" label="Previous testimonial" />
-                <NavBtn onClick={() => paginate(1)} dir="next" label="Next testimonial" />
             </div>
         </section>
     );

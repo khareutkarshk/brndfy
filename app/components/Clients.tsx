@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import Image, { StaticImageData } from "next/image";
+import { useEffect, useRef } from "react";
+import Image, { type StaticImageData } from "next/image";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitReveal from "./fx/SplitReveal";
 
 import INDmoney from "@/assets/logos/Influencer-brand-logos/INDmoney.png";
 import Abhibus from "@/assets/logos/Influencer-brand-logos/Abhibus.png";
@@ -12,6 +15,7 @@ import Monster from "@/assets/logos/Influencer-brand-logos/Monster.png";
 import Nescafe from "@/assets/logos/Influencer-brand-logos/Nescafe.png";
 import Newton from "@/assets/logos/Influencer-brand-logos/Newton.png";
 import Polaris from "@/assets/logos/Influencer-brand-logos/Polaris.png";
+import Polkapop from "@/assets/logos/Influencer-brand-logos/Polkapop.png";
 import Predator from "@/assets/logos/Influencer-brand-logos/Predator.png";
 import Qonect from "@/assets/logos/Influencer-brand-logos/Qonect.png";
 import Slice from "@/assets/logos/Influencer-brand-logos/Slice.png";
@@ -23,24 +27,12 @@ import NIAT from "@/assets/logos/Influencer-brand-logos/NIAT.png";
 import Viberse from "@/assets/logos/Influencer-brand-logos/Viberse.png";
 import Porter from "@/assets/logos/Influencer-brand-logos/Porter.png";
 
+type Brand = { name: string; logo: StaticImageData };
 
-import Bg1 from "@/assets/logos/brands/bg1.png";
-import Bg2 from "@/assets/logos/brands/bg2.png";
-import Bg3 from "@/assets/logos/brands/bg3.png";
-import Bg4 from "@/assets/logos/brands/bg4.png";
-
-const BG_IMAGES = [Bg1, Bg2, Bg3, Bg4];
-
-interface Brand {
-    name: string;
-    logo: StaticImageData;
-    bg: StaticImageData;
-}
-
-const BRAND_LIST: Omit<Brand, "bg">[] = [
+const ROW_A: Brand[] = [
     { name: "INDmoney", logo: INDmoney },
     { name: "Vyapar", logo: Vyapar },
-    { name: "Slice", logo: Slice },
+    { name: "slice", logo: Slice },
     { name: "AU Small Finance Bank", logo: AU },
     { name: "Porter", logo: Porter },
     { name: "Newton School of Technology", logo: Newton },
@@ -48,116 +40,87 @@ const BRAND_LIST: Omit<Brand, "bg">[] = [
     { name: "Scaler School of Technology", logo: Scalar },
     { name: "Stride School of Business", logo: Stride },
     { name: "Vedam School of Technology", logo: Vedam },
+];
+
+const ROW_B: Brand[] = [
     { name: "NIAT", logo: NIAT },
-    { name: "Abhibus", logo: Abhibus },
+    { name: "AbhiBus", logo: Abhibus },
     { name: "Hilary Rhoda", logo: HilaryRhoda },
-    { name: "Drishti", logo: Drishti },
+    { name: "Drishti IAS", logo: Drishti },
     { name: "Monster Energy", logo: Monster },
     { name: "Nescafe", logo: Nescafe },
     { name: "Predator Energy", logo: Predator },
-    { name: "Qonect", logo: Qonect },
+    { name: "Qoneqt", logo: Qonect },
     { name: "Viberse", logo: Viberse },
+    { name: "Polka Pop", logo: Polkapop },
 ];
 
-// Assign a bg deterministically by index so it's stable across renders
-const BRANDS: Brand[] = BRAND_LIST.map((brand, i) => ({
-    ...brand,
-    bg: BG_IMAGES[i % BG_IMAGES.length],
-}));
-
-// Split brands into two rows for mobile marquee
-const BRANDS_ROW1 = BRANDS.slice(0, Math.ceil(BRANDS.length / 2));
-const BRANDS_ROW2 = BRANDS.slice(Math.ceil(BRANDS.length / 2));
-
-const BrandCard = ({ brand }: { brand: Brand }) => {
-    const [hovered, setHovered] = useState(false);
-
+function Row({ brands, dir }: { brands: Brand[]; dir: 1 | -1 }) {
     return (
-        <div
-            className="relative flex items-center justify-center aspect-square rounded-xl overflow-hidden border border-secondary/10 cursor-pointer transition-all duration-300 p-3 sm:p-4"
-            style={{ backgroundColor: "#F8F8F7" }}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-        >
-            {/* Background image — fades in on hover */}
-            <Image
-                src={brand.bg}
-                alt=""
-                fill
-                aria-hidden
-                className={`object-cover transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"
-                    }`}
-                sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 12vw"
-            />
-
-            {/* Logo — sits above bg, drops grayscale on hover */}
-            <div className="relative z-10 size-20">
-                <Image
-                    src={brand.logo}
-                    alt={brand.name}
-                    fill
-                    className={`object-contain size-24 transition-all duration-300 `}
-                />
+        <div className="overflow-hidden mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div data-marquee={dir} className="flex w-max gap-4 sm:gap-6">
+                {[...brands, ...brands].map((b, i) => (
+                    <div
+                        key={`${b.name}-${i}`}
+                        className="group relative size-24 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-line transition-transform duration-500 ease-out-expo hover:-translate-y-1.5 hover:scale-105 sm:size-32"
+                    >
+                        <Image src={b.logo} alt={i < brands.length ? b.name : ""} fill sizes="128px" className="object-cover" />
+                    </div>
+                ))}
             </div>
         </div>
     );
-};
+}
 
+/**
+ * Chapter seven. The page's one marquee: two rows in opposite directions
+ * that speed up with scroll velocity and flip with scroll direction.
+ */
 const Clients = () => {
+    const root = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const el = root.current;
+        if (!el) return;
+        const mm = gsap.matchMedia();
+        mm.add("(prefers-reduced-motion: no-preference)", () => {
+            const tweens = gsap.utils.toArray<HTMLElement>("[data-marquee]", el).map((track) => {
+                const dir = Number(track.dataset.marquee);
+                return gsap.fromTo(
+                    track,
+                    { xPercent: dir === 1 ? 0 : -50 },
+                    { xPercent: dir === 1 ? -50 : 0, duration: 38, ease: "none", repeat: -1 },
+                );
+            });
+            let heading = 1;
+            const st = ScrollTrigger.create({
+                trigger: el,
+                start: "top bottom",
+                end: "bottom top",
+                onUpdate: (self) => {
+                    heading = self.direction;
+                    const boost = 1 + Math.min(Math.abs(self.getVelocity()) / 400, 5);
+                    tweens.forEach((t) => {
+                        gsap.to(t, { timeScale: heading * boost, duration: 0.2, overwrite: true });
+                        gsap.to(t, { timeScale: heading, duration: 1.2, delay: 0.2, ease: "power2.out" });
+                    });
+                },
+            });
+            return () => st.kill();
+        });
+        return () => mm.revert();
+    }, []);
+
     return (
-        <section
-            id="clients"
-            className="relative bg-white rounded-2xl py-16 sm:px-12 lg:px-20 overflow-hidden"
-        >
-            {/* Header */}
-            <div className="mb-12 max-w-7xl mx-auto px-6 sm:px-0">
-                <span className="text-xs sm:text-sm font-bold tracking-[0.2em] text-secondary/60 uppercase">
-                    /Clients
-                </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-secondary leading-tight mt-4 tracking-tight">
-                    Some of the Brands <br />
-                </h2>
-<h2 className="text-3xl sm:text-4xl lg:text-5xl font-normal leading-tight tracking-tight">
-                    <em className="font-serif italic text-primary">We Worked With</em>
-                </h2>
+        <section ref={root} id="clients" className="relative overflow-hidden bg-ink py-24 lg:py-32">
+            <div className="mx-auto max-w-[1400px] px-4 sm:px-10 lg:px-16">
+                <SplitReveal className="max-w-[20ch] font-display text-[clamp(2rem,4.4vw,4rem)] font-light leading-[1.05] tracking-[-0.035em] text-paper">
+                    Brands we have <span className="font-semibold">built with.</span>
+                </SplitReveal>
             </div>
-
-            {/* ── Desktop: Logo grid (hidden on mobile) ── */}
-            <div className="hidden sm:grid max-w-7xl mx-auto grid-cols-6 lg:grid-cols-8 gap-3">
-                {BRANDS.map((brand) => (
-                    <BrandCard key={brand.name} brand={brand} />
-                ))}
-            </div>
-
-            {/* ── Mobile: 2 auto-scrolling rows (hidden on desktop) ── */}
-            <div className="sm:hidden flex flex-col gap-3">
-                {/* Row 1 — scrolls left */}
-                <div
-                    className="overflow-hidden"
-                    style={{ maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)" }}
-                >
-                    <div className="flex gap-3 w-max animate-scroll-left hover:[animation-play-state:paused]">
-                        {[...BRANDS_ROW1, ...BRANDS_ROW1].map((brand, i) => (
-                            <div key={`m1-${brand.name}-${i}`} className="w-20 shrink-0">
-                                <BrandCard brand={brand} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Row 2 — scrolls left at a slightly different speed */}
-                <div
-                    className="overflow-hidden"
-                    style={{ maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)" }}
-                >
-                    <div className="flex gap-3 w-max animate-scroll-left-slow hover:[animation-play-state:paused]">
-                        {[...BRANDS_ROW2, ...BRANDS_ROW2].map((brand, i) => (
-                            <div key={`m2-${brand.name}-${i}`} className="w-20 shrink-0">
-                                <BrandCard brand={brand} />
-                            </div>
-                        ))}
-                    </div>
-                </div>
+            <div className="mt-14 flex flex-col gap-4 sm:gap-6 lg:mt-20">
+                <Row brands={ROW_A} dir={1} />
+                <Row brands={ROW_B} dir={-1} />
             </div>
         </section>
     );

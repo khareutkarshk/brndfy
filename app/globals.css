@@ -1,6 +1,85 @@
 @import "tailwindcss";
 
-/* Hide scrollbar for slider */
+/*
+ * Brndfy palette. Cobalt (#1744FF) is the single accent; everything else is
+ * a cool navy-tinted neutral built around it so the blue never fights a
+ * second hue. The home page is dark-locked: the brand lives on ink.
+ *
+ * Radius rule: cards/panels 28px, media tiles 20px, every interactive
+ * control (buttons, chips, inputs) is a full pill.
+ */
+:root {
+  --color-primary: #1744ff;
+  --color-secondary: #0d1350;
+  --color-accent: #b0d7f9;
+  --color-base: #fefdfa;
+
+  --ink: #05061a;
+  --ink-2: #0a0c26;
+  --ink-3: #141943;
+  --line: rgba(176, 215, 249, 0.12);
+  --paper: #eef1fa;
+  --mute: #9aa1c4;
+  --cobalt-hi: #4b6dff;
+}
+
+@theme inline {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-base: var(--color-base);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-mute: var(--mute);
+  --color-cobalt-hi: var(--cobalt-hi);
+
+  --font-sans: var(--font-gotham);
+  --font-display: var(--font-sora);
+  --font-mono: var(--font-geist-mono);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--ink);
+}
+
+/* Text colour is set per page: inner pages still sit on white cards */
+body {
+  background: var(--ink);
+}
+
+::selection {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Film grain: fixed, non-scrolling layer so it never repaints with content */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hide scrollbar for rails */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -9,91 +88,65 @@
   scrollbar-width: none;
 }
 
-/* Infinite marquee scroll animations */
+/* Logo marquee */
 @keyframes scroll-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
-
 .animate-scroll-left {
   animation: scroll-left 30s linear infinite;
 }
-
 .animate-scroll-left-slow {
   animation: scroll-left 40s linear infinite;
 }
 
-/* Shining border animation */
+/* Rotating light edge used on the primary CTA */
 @property --shine-angle {
   syntax: "<angle>";
   inherits: false;
   initial-value: 0deg;
 }
-
 @keyframes shine-rotate {
-  0% { --shine-angle: 0deg; }
-  100% { --shine-angle: 360deg; }
+  to { --shine-angle: 360deg; }
 }
-
 .shimmer-border {
   position: relative;
-  border: none !important;
-  background: transparent;
   isolation: isolate;
 }
-
 .shimmer-border::before {
   content: "";
   position: absolute;
   inset: -1.5px;
   border-radius: inherit;
-  background: conic-gradient(
-    from var(--shine-angle),
-    transparent 0%,
-    transparent 70%,
-    #B0D7F9 80%,
-    #ffffff 85%,
-    #1744FF 90%,
-    transparent 100%
-  );
+  background: conic-gradient(from var(--shine-angle), transparent 0% 70%, #b0d7f9 80%, #ffffff 85%, #1744ff 90%, transparent 100%);
   animation: shine-rotate 2.4s linear infinite;
   z-index: -1;
 }
-
 .shimmer-border::after {
   content: "";
   position: absolute;
   inset: 1px;
   border-radius: inherit;
-  background: #0D1350;
+  background: #0d1350;
   z-index: -1;
 }
 
-:root {
-  --color-primary: #1744FF;
-  --color-secondary: #0D1350;
-  --color-accent: #B0D7F9;
-  --color-base: #FEFDFA;
+/* Outlined display type */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(176, 215, 249, 0.35);
 }
 
-@theme inline {
-  --color-primary: var(--color-primary);
-  --color-secondary: var(--color-secondary);
-  --color-accent: var(--color-accent);
-  --color-base: var(--color-base);
-  --font-sans: var(--font-gotham);
-  --font-mono: var(--font-geist-mono);
+/* Hairline gradient used under section rows */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(176, 215, 249, 0.18) 20%, rgba(176, 215, 249, 0.18) 80%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary: #1744FF;
-    --color-secondary: #0D1350;
-    --color-accent: #B0D7F9;
-    --color-base: #FEFDFA;
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll-left,
+  .animate-scroll-left-slow,
+  .shimmer-border::before {
+    animation: none;
   }
 }

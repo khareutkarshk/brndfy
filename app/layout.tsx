@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Sora, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HashScrollHandler from "./components/HashScrollHandler";
+import SmoothScroll from "./components/fx/SmoothScroll";
 
 const gotham = localFont({
   src: [
@@ -89,6 +91,22 @@ const gotham = localFont({
     },
   ],
   variable: "--font-gotham",
+  display: "swap",
+});
+
+// Display face: clean geometric sans whose round bowls echo the D-and-circle mark
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sora",
+  display: "swap",
+});
+
+// Data labels and figures
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
 });
 
 import JsonLd from "./components/JsonLd";
@@ -186,14 +204,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${gotham.variable} font-sans antialiased`}>
+      <body className={`${gotham.variable} ${sora.variable} ${geistMono.variable} font-sans antialiased`}>
         <JsonLd data={organizationSchema} />
+        <SmoothScroll />
         <Header />
         <HashScrollHandler />
         {children}
         <div className="p-3">
           <Footer />
         </div>
+        {/* z-index scale: header 60, mobile menu 55, grain 70, video lightbox 85, preloader 90 */}
+        <div className="grain" aria-hidden />
       </body>
     </html>
   );
