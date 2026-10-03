@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import Odometer from "./fx/Odometer";
 import SplitReveal from "./fx/SplitReveal";
+import Eyebrow from "./fx/Eyebrow";
 import { CREATORS } from "@/app/data/creators";
 import { INFLUENCER_CASES } from "@/app/data/influencerWork";
 
@@ -22,9 +23,10 @@ const Numbers = () => {
     const reduce = useReducedMotion();
 
     return (
-        <section id="numbers" className="relative bg-ink px-4 py-24 sm:px-10 lg:px-16 lg:py-32">
-            <div className="mx-auto max-w-[1400px]">
-                <SplitReveal className="max-w-[18ch] font-display text-[clamp(2rem,4.4vw,4rem)] font-light leading-[1.05] tracking-[-0.03em] text-paper">
+        <section id="numbers" className="relative px-4 py-20 sm:px-10 lg:px-16 lg:py-28">
+            <div data-recede className="mx-auto max-w-[1400px]">
+                <Eyebrow index="03" label="Proof" />
+                <SplitReveal className="chapter-title max-w-[18ch]">
                     Proof, <span className="font-semibold">not promises.</span>
                 </SplitReveal>
 

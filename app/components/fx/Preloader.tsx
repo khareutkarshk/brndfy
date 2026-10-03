@@ -25,7 +25,10 @@ export default function Preloader() {
         } catch {}
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        if (seen || reduce) {
+        // Arriving for a specific chapter (/#work from another page): go straight there
+        const deepLink = window.location.hash.length > 1;
+
+        if (seen || reduce || deepLink) {
             if (root.current) root.current.style.display = "none";
             finishIntro();
             return;

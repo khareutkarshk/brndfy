@@ -40,7 +40,7 @@ export default function FinalCTA() {
     }, []);
 
     return (
-        <section ref={root} id="start" className="relative bg-ink">
+        <section ref={root} id="start" className="relative">
             <div data-cta-panel className="relative flex min-h-[100dvh] items-center overflow-hidden bg-primary px-4 py-28 sm:px-10 lg:px-16">
                 <div data-cta-mark className="pointer-events-none absolute -right-[18%] top-1/2 -translate-y-1/2 opacity-30 sm:-right-[8%]">
                     <BrndfyMark className="h-[80vh] w-auto text-secondary" />

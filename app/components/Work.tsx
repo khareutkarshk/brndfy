@@ -8,6 +8,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { InstagramLogo, Play, YoutubeLogo, ArrowRight, ArrowLeft } from "@phosphor-icons/react";
 import SplitReveal from "./fx/SplitReveal";
+import Eyebrow from "./fx/Eyebrow";
+import Odometer from "./fx/Odometer";
 import VideoLightbox from "./fx/VideoLightbox";
 import { scrollToTarget } from "./fx/SmoothScroll";
 import { CREATOR_PHOTOS } from "@/app/data/creators";
@@ -138,10 +140,96 @@ function CohortChart({ cohorts }: { cohorts: Cohort[] }) {
     );
 }
 
+// ─── Case cover ──────────────────────────────────────────────────────────────
+
+/**
+ * The views figure as a meter: outlined at rest, then filled left to right
+ * as the case scrolls into view.
+ */
+function ViewsMeter({ value }: { value: string }) {
+    const fill = useRef<HTMLSpanElement>(null);
+
+    useEffect(() => {
+        const el = fill.current;
+        if (!el) return;
+        const mm = gsap.matchMedia();
+        mm.add("(prefers-reduced-motion: no-preference)", () => {
+            gsap.fromTo(
+                el,
+                { clipPath: "inset(0 100% 0 0)" },
+                {
+                    clipPath: "inset(0 0% 0 0)",
+                    ease: "none",
+                    scrollTrigger: { trigger: el, start: "top 90%", end: "top 45%", scrub: 0.6 },
+                },
+            );
+        });
+        return () => mm.revert();
+    }, []);
+
+    const type = "font-display text-[clamp(4.5rem,13vw,10rem)] font-semibold leading-[0.85] tracking-[-0.055em]";
+    return (
+        <span className="relative inline-block">
+            <span aria-hidden className={`text-outline ${type}`}>{value}</span>
+            <span ref={fill} className={`absolute inset-0 bg-linear-to-r from-paper via-paper to-cobalt-hi bg-clip-text text-transparent ${type}`}>
+                {value}
+            </span>
+        </span>
+    );
+}
+
+/** Faces of the creators on a case, portraits where we have them */
+function CreatorStack({ reels }: { reels: Reel[] }) {
+    const names = [...new Set(reels.map((r) => r.creator))];
+    const shown = names.slice(0, 5);
+    return (
+        <div className="flex items-center">
+            <div className="flex -space-x-3">
+                {shown.map((n, i) => {
+                    const photo = CREATOR_PHOTOS[n];
+                    return (
+                        <div
+                            key={n}
+                            title={n}
+                            className="relative grid size-11 place-items-center overflow-hidden rounded-full ring-[3px] ring-ink-2 sm:size-12"
+                            style={photo ? undefined : { background: `linear-gradient(${150 + i * 37}deg, #1744FF, #0D1350)` }}
+                        >
+                            {photo ? (
+                                <Image src={photo} alt={n} fill sizes="48px" className="object-cover" />
+                            ) : (
+                                <span className="font-display text-xs font-semibold text-white">{initials(n)}</span>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+            {names.length > shown.length && (
+                <span className="ml-2 grid size-11 place-items-center rounded-full border border-dashed border-paper/25 font-mono text-[11px] text-paper sm:size-12">
+                    +{names.length - shown.length}
+                </span>
+            )}
+        </div>
+    );
+}
+
 // ─── Case article ─────────────────────────────────────────────────────────────
 
-function CaseArticle({ study, onOpen }: { study: InfluencerCase; onOpen: (r: Reel, brand: string) => void }) {
+function CaseArticle({
+    study,
+    index,
+    total,
+    onOpen,
+}: {
+    study: InfluencerCase;
+    index: number;
+    total: number;
+    onOpen: (r: Reel, brand: string) => void;
+}) {
     const reduce = useReducedMotion();
+    // Every case leads with creators and total views; the rest are outcomes
+    const [creators, ...restStats] = study.stats;
+    const views = restStats.find((s) => /views/i.test(s.label));
+    const outcomes = restStats.filter((s) => s !== views);
     const rail = useRef<HTMLDivElement>(null);
     const nudge = (dir: 1 | -1) => rail.current?.scrollBy({ left: dir * rail.current.clientWidth * 0.8, behavior: "smooth" });
     const groups = study.reels.reduce<{ label?: string; reels: Reel[] }[]>((acc, r) => {
@@ -152,7 +240,7 @@ function CaseArticle({ study, onOpen }: { study: InfluencerCase; onOpen: (r: Ree
     }, []);
 
     return (
-        <article id={`case-${study.slug}`} data-case className="scroll-mt-28 border-t border-line py-16 first:border-t-0 first:pt-0 lg:py-24">
+        <article id={`case-${study.slug}`} data-case className="scroll-mt-28 py-10 first:pt-0 lg:py-14">
             {/* Mobile identity (desktop shows it in the sticky index) */}
             <div className="mb-8 flex items-center gap-4 lg:hidden">
                 <div className="relative size-14 overflow-hidden rounded-full bg-white">
@@ -164,50 +252,89 @@ function CaseArticle({ study, onOpen }: { study: InfluencerCase; onOpen: (r: Ree
                 </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-                {[study.category, ...study.tags].map((t, i) => (
-                    <span
-                        key={t}
-                        className={`rounded-full px-3 py-1 text-xs ${i === 0 ? "bg-primary/15 text-accent" : "border border-line text-mute"} ${i === 0 ? "hidden lg:inline-block" : ""}`}
-                    >
-                        {t}
-                    </span>
-                ))}
-            </div>
-
-            <SplitReveal
-                as="h3"
-                className="mt-6 max-w-[20ch] font-display text-[clamp(1.9rem,3.6vw,3.4rem)] font-medium leading-[1.06] tracking-[-0.03em] text-paper"
+            {/* Cover: the result, front and centre */}
+            <div
+                className={`relative isolate overflow-hidden rounded-[28px] p-6 sm:p-10 ${
+                    index % 2 ? "bg-secondary" : "border border-line bg-ink-2"
+                }`}
             >
-                {study.tagline}
-            </SplitReveal>
-            <p className="mt-4 max-w-[60ch] text-lg text-mute">{study.headline}</p>
-
-            <div className="mt-10 grid gap-8 md:grid-cols-2 md:gap-10">
-                <div>
-                    <p className="font-display text-sm font-medium text-paper">The brief</p>
-                    <p className="mt-3 leading-relaxed text-mute">{study.brief}</p>
+                <div className="pointer-events-none absolute -right-40 -top-40 -z-10 size-[28rem] rounded-full bg-primary/25 blur-[110px]" />
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-3 font-mono text-[11px] uppercase tracking-[0.18em]">
+                    <span className="text-cobalt-hi">
+                        Case {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+                    </span>
+                    {/* Phones already show the category beside the logo */}
+                    <span className="hidden h-px w-8 bg-paper/20 lg:block" />
+                    <span className="hidden text-mute lg:inline">{study.category}</span>
+                    <div className="flex flex-wrap gap-2 normal-case tracking-normal sm:ml-auto">
+                        {study.tags.map((t) => (
+                            <span key={t} className="rounded-full border border-paper/15 px-3 py-1 font-sans text-xs text-paper/75">
+                                {t}
+                            </span>
+                        ))}
+                    </div>
                 </div>
-                <div>
-                    <p className="font-display text-sm font-medium text-paper">What we did</p>
-                    <p className="mt-3 leading-relaxed text-mute">{study.whatWeDid}</p>
+
+                <SplitReveal
+                    as="h3"
+                    className="mt-6 max-w-[18ch] font-display text-[clamp(1.9rem,3.6vw,3.2rem)] font-medium leading-[1.06] tracking-[-0.03em] text-paper"
+                >
+                    {study.tagline}
+                </SplitReveal>
+                <p className="mt-4 max-w-[52ch] text-mute">{study.headline}</p>
+
+                <div className="mt-10 grid gap-8 sm:mt-14 xl:grid-cols-[1fr_auto] xl:items-end">
+                    {views && (
+                        <div>
+                            <ViewsMeter value={views.value} />
+                            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-mute">{views.label}</p>
+                        </div>
+                    )}
+                    <div className="flex flex-col gap-6 xl:items-end xl:text-right">
+                        <div className="flex items-center gap-4 xl:flex-row-reverse">
+                            <CreatorStack reels={study.reels} />
+                            <div>
+                                <p className="font-display text-2xl font-semibold leading-none tracking-[-0.03em] text-paper">{creators.value}</p>
+                                <p className="mt-1 text-xs text-mute">{creators.label}</p>
+                            </div>
+                        </div>
+                        {outcomes.length > 0 && (
+                            <div className="flex gap-8 border-t border-paper/10 pt-5 xl:justify-end">
+                                {outcomes.map((o) => (
+                                    <div key={o.label}>
+                                        <Odometer value={o.value} className="font-display text-[clamp(1.6rem,2.4vw,2.2rem)] font-semibold tracking-[-0.03em] text-paper" />
+                                        <p className="mt-1 text-xs text-mute">{o.label}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            <div className={`mt-12 grid grid-cols-2 gap-x-6 gap-y-8 ${study.stats.length === 4 ? "md:grid-cols-4" : "md:grid-cols-3"}`}>
-                {study.stats.map((s, i) => (
+            {/* The ask, then our move */}
+            <div className="relative mt-4 grid gap-4 md:grid-cols-2">
+                {[
+                    { n: "01", label: "The ask", body: study.brief, tone: "border border-line" },
+                    { n: "02", label: "Our move", body: study.whatWeDid, tone: "border border-primary/35 bg-primary/[0.07]" },
+                ].map((b, i) => (
                     <motion.div
-                        key={s.label}
+                        key={b.label}
                         initial={reduce ? false : { opacity: 0, y: 24 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.6 }}
-                        transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                        className="border-l border-primary/60 pl-4"
+                        viewport={{ once: true, amount: 0.4 }}
+                        transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                        className={`rounded-[24px] p-6 sm:p-8 ${b.tone}`}
                     >
-                        <p className="font-display text-[clamp(1.8rem,2.5vw,2.4rem)] font-semibold leading-none tracking-[-0.03em] text-paper">{s.value}</p>
-                        <p className="mt-2 text-sm text-mute">{s.label}</p>
+                        <p className="font-mono text-[11px] uppercase tracking-[0.18em]">
+                            <span className="text-cobalt-hi">{b.n}</span> <span className="text-paper">{b.label}</span>
+                        </p>
+                        <p className="mt-4 leading-relaxed text-mute">{b.body}</p>
                     </motion.div>
                 ))}
+                <span className="absolute left-1/2 top-1/2 hidden size-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary text-white ring-[6px] ring-ink md:grid">
+                    <ArrowRight weight="bold" className="size-4" />
+                </span>
             </div>
 
             {study.cohorts && (
@@ -280,11 +407,11 @@ const Work = () => {
     const current = INFLUENCER_CASES[active];
 
     return (
-        <section ref={root} id="work" className="relative bg-ink px-4 pb-24 pt-24 sm:px-10 lg:px-16 lg:pb-32">
-            <div className="mx-auto max-w-[1400px]">
+        <section ref={root} id="work" className="relative px-4 py-20 sm:px-10 lg:px-16 lg:py-28">
+            <div data-recede className="mx-auto max-w-[1400px]">
                 <div className="max-w-[1100px]">
-                    <p className="mb-6 font-mono text-[11px] uppercase tracking-[0.24em] text-accent/80 sm:text-xs">Selected work</p>
-                    <SplitReveal className="font-display text-[clamp(2.2rem,5.6vw,5.4rem)] font-light leading-[1.02] tracking-[-0.035em] text-paper">
+                    <Eyebrow index="04" label="Selected work" />
+                    <SplitReveal className="chapter-title max-w-[22ch]">
                         Six brands. Six briefs. <span className="font-semibold text-cobalt-hi">Creators that delivered.</span>
                     </SplitReveal>
                 </div>
@@ -342,8 +469,8 @@ const Work = () => {
                     </aside>
 
                     <div className="lg:col-span-8">
-                        {INFLUENCER_CASES.map((study) => (
-                            <CaseArticle key={study.slug} study={study} onOpen={(reel, brand) => setPlaying({ reel, brand })} />
+                        {INFLUENCER_CASES.map((study, i) => (
+                            <CaseArticle key={study.slug} study={study} index={i} total={INFLUENCER_CASES.length} onOpen={(reel, brand) => setPlaying({ reel, brand })} />
                         ))}
                         <Link href="/case-studies" className="group mt-4 inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-paper lg:hidden">
                             Brand Activations

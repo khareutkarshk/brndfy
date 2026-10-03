@@ -69,6 +69,41 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
+/*
+ * Scrollbar: a navy pill floating in an ink track, cobalt while held.
+ * Chrome 121+ drops the ::-webkit-scrollbar styles whenever scrollbar-color
+ * is set, so the standard properties go to Firefox only (feature-detected by
+ * -moz-appearance; Next's CSS pipeline rejects @supports selector()).
+ */
+:root {
+  --scroll-thumb: #2a3172;
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--ink);
+}
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--scroll-thumb) padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary) padding-box;
+}
+::-webkit-scrollbar-thumb:active {
+  background: var(--cobalt-hi) padding-box;
+}
+@supports (-moz-appearance: none) {
+  html {
+    scrollbar-color: var(--scroll-thumb) var(--ink);
+    scrollbar-width: thin;
+  }
+}
+
 /* Film grain: fixed, non-scrolling layer so it never repaints with content */
 .grain {
   position: fixed;
@@ -149,4 +184,9 @@ html.lenis body {
   .shimmer-border::before {
     animation: none;
   }
+}
+
+/* One size for every chapter title so sections open with the same weight */
+@utility chapter-title {
+  @apply font-display text-[clamp(2.2rem,4.6vw,4.4rem)] leading-[1.04] font-light tracking-[-0.035em] text-paper;
 }

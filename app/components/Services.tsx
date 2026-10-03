@@ -5,9 +5,47 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SplitReveal from "./fx/SplitReveal";
+import Eyebrow from "./fx/Eyebrow";
+import { MARK_D_PATH, MARK_VIEWBOX } from "./fx/BrndfyMark";
 import { CREATORS } from "@/app/data/creators";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// ─── Stage mark ───────────────────────────────────────────────────────────────
+
+/**
+ * The Brndfy mark as a watermark that assembles across the cycle: the B bowl
+ * lights up at Find, the R leg at Plan, both outline at Run and both go
+ * solid at Deliver, when B and R fuse into the full mark.
+ */
+const MARK_STATES: { d: "dim" | "lit" | "solid"; o: "dim" | "lit" | "solid" }[] = [
+    { d: "lit", o: "dim" },
+    { d: "dim", o: "lit" },
+    { d: "lit", o: "lit" },
+    { d: "solid", o: "solid" },
+];
+
+function StageMark({ stage, onBlue }: { stage: number; onBlue: boolean }) {
+    const { d, o } = MARK_STATES[stage];
+    const tone = onBlue ? "255,255,255" : "176,215,249";
+    const paint = (state: "dim" | "lit" | "solid") => ({
+        fill: state === "solid" ? `rgba(${tone},0.12)` : "none",
+        stroke: `rgba(${tone},${state === "dim" ? 0.1 : 0.45})`,
+        strokeWidth: 1.5,
+        vectorEffect: "non-scaling-stroke" as const,
+    });
+    return (
+        <svg
+            viewBox={MARK_VIEWBOX}
+            aria-hidden
+            overflow="visible"
+            className="pointer-events-none absolute -bottom-[18%] -left-[4%] -z-10 hidden h-[115%] w-auto select-none lg:block"
+        >
+            <path d={MARK_D_PATH} {...paint(d)} />
+            <circle cx="820" cy="1450" r="470" {...paint(o)} />
+        </svg>
+    );
+}
 
 // ─── Per-service visuals ─────────────────────────────────────────────────────
 
@@ -94,6 +132,7 @@ function ValueVisual() {
 const SERVICES = [
     {
         title: "Creator discovery",
+        stage: "Find",
         body: "We find the right creators by audience, niche, geography and campaign goal, and check audience quality before anyone reaches your shortlist.",
         tags: ["Nano to mega", "City-level targeting", "Audience checks"],
         visual: <DiscoveryVisual />,
@@ -101,6 +140,7 @@ const SERVICES = [
     },
     {
         title: "Campaign strategy",
+        stage: "Plan",
         body: "We build the creator mix and content direction around your objective, not around who is trending this week.",
         tags: ["Objective-led", "Creator mix", "Platform playbooks"],
         visual: <StrategyVisual />,
@@ -108,6 +148,7 @@ const SERVICES = [
     },
     {
         title: "End-to-end execution",
+        stage: "Run",
         body: "Briefs, scripts, approvals, agreements, payments and publishing. One shared sheet, always current, nothing to chase.",
         tags: ["Briefs & scripts", "Approvals", "On-time publishing"],
         visual: <ExecutionVisual />,
@@ -115,6 +156,7 @@ const SERVICES = [
     },
     {
         title: "Better value",
+        stage: "Deliver",
         body: "We negotiate competitive creator rates and share the real commercials, so more of your budget becomes content.",
         tags: ["Rate negotiation", "Transparent pricing", "Post-campaign reports"],
         visual: <ValueVisual />,
@@ -147,44 +189,93 @@ const Services = () => {
     }, []);
 
     return (
-        <section ref={root} id="services" className="relative bg-ink px-4 pt-24 sm:px-10 lg:px-16 lg:pt-32">
-            <div className="mx-auto max-w-[1400px]">
-                <SplitReveal className="max-w-[18ch] font-display text-[clamp(2.2rem,5vw,4.8rem)] font-light leading-[1.03] tracking-[-0.035em] text-paper">
+        <section ref={root} id="services" className="relative px-4 pt-20 sm:px-10 lg:px-16 lg:pt-28">
+            <div data-recede className="mx-auto max-w-[1400px]">
+                <Eyebrow index="06" label="What we do" />
+                <SplitReveal className="chapter-title max-w-[18ch]">
                     From discovery <span className="font-semibold">to delivery.</span>
                 </SplitReveal>
                 <p className="mt-6 max-w-[48ch] text-lg text-mute">The entire influencer marketing cycle, handled by one team.</p>
 
                 <div className="mt-14 flex flex-col gap-4 pb-24 lg:mt-10 lg:gap-0 lg:pb-0">
-                    {SERVICES.map((s, i) => (
-                        <div key={s.title} data-stack-card className="lg:sticky lg:top-0 lg:flex lg:h-[100dvh] lg:items-center">
-                            <div
-                                data-stack-inner
-                                className={`relative grid w-full origin-top grid-cols-1 gap-10 overflow-hidden rounded-[28px] p-7 sm:p-10 lg:min-h-[70dvh] lg:grid-cols-2 lg:gap-16 lg:p-14 ${s.surface}`}
-                                style={{ marginTop: `${i * 14}px` }}
-                            >
-                                <div className="flex flex-col justify-between gap-10">
-                                    <div>
-                                        <h3 className="font-display text-[clamp(1.9rem,3.6vw,3.4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-paper">
-                                            {s.title}
-                                        </h3>
-                                        <p className={`mt-5 max-w-[42ch] text-base leading-relaxed sm:text-lg ${i === 3 ? "text-white/85" : "text-mute"}`}>{s.body}</p>
+                    {SERVICES.map((s, i) => {
+                        const onBlue = i === 3;
+                        return (
+                            <div key={s.title} data-stack-card className="lg:sticky lg:top-0 lg:flex lg:h-[100dvh] lg:items-center">
+                                <div
+                                    data-stack-inner
+                                    className={`relative isolate w-full origin-top overflow-hidden rounded-l-[28px] rounded-r-[72px] sm:rounded-r-[120px] lg:rounded-r-[160px] ${s.surface}`}
+                                    style={{ marginTop: `${i * 14}px` }}
+                                >
+                                    {/* Stage strip: where this service sits in the cycle */}
+                                    <div
+                                        className={`flex items-center gap-4 border-b py-4 pl-7 pr-16 font-mono text-[11px] uppercase tracking-[0.18em] sm:pl-10 sm:pr-24 lg:pl-14 lg:pr-28 ${
+                                            onBlue ? "border-white/20 text-white/80" : "border-line text-mute"
+                                        }`}
+                                    >
+                                        <span className={onBlue ? "text-white" : "text-cobalt-hi"}>{String(i + 1).padStart(2, "0")}</span>
+                                        <span>{s.stage}</span>
+                                        <div className="ml-auto flex items-center gap-1.5" aria-hidden>
+                                            {SERVICES.map((_, j) => (
+                                                <span
+                                                    key={j}
+                                                    className={`h-1 rounded-full transition-all ${j === i ? "w-8" : "w-3"} ${
+                                                        onBlue ? (j <= i ? "bg-white" : "bg-white/25") : j <= i ? "bg-primary" : "bg-paper/15"
+                                                    }`}
+                                                />
+                                            ))}
+                                        </div>
+                                        <span className="hidden sm:inline">{String(i + 1).padStart(2, "0")} / {String(SERVICES.length).padStart(2, "0")}</span>
                                     </div>
-                                    <div className="flex flex-wrap gap-2">
-                                        {s.tags.map((t) => (
-                                            <span
-                                                key={t}
-                                                className={`rounded-full px-3.5 py-1.5 text-xs ${i === 3 ? "bg-white/15 text-white" : "border border-line text-paper/80"}`}
-                                            >
-                                                {t}
-                                            </span>
-                                        ))}
+
+                                    <div className="relative grid grid-cols-1 gap-10 p-7 sm:p-10 lg:min-h-[62dvh] lg:grid-cols-2 lg:gap-16 lg:p-14">
+                                        <StageMark stage={i} onBlue={onBlue} />
+                                        <div className={`pointer-events-none absolute -right-32 -top-32 -z-10 size-96 rounded-full blur-3xl ${onBlue ? "bg-white/15" : "bg-primary/20"}`} />
+
+                                        <div className="flex flex-col justify-between gap-10">
+                                            <div>
+                                                <h3 className="font-display text-[clamp(1.9rem,3.6vw,3.4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-paper">
+                                                    {s.title}
+                                                </h3>
+                                                <p className={`mt-5 max-w-[42ch] text-base leading-relaxed sm:text-lg ${onBlue ? "text-white/85" : "text-mute"}`}>{s.body}</p>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                {s.tags.map((t) => (
+                                                    <span
+                                                        key={t}
+                                                        className={`rounded-full px-3.5 py-1.5 text-xs backdrop-blur ${onBlue ? "bg-white/15 text-white" : "border border-line bg-ink/30 text-paper/80"}`}
+                                                    >
+                                                        {t}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Viewfinder: the visual sits in a framed stage with corner ticks */}
+                                        <div
+                                            className={`relative flex w-full items-center rounded-[20px] p-6 sm:p-8 [&>:last-child]:w-full ${
+                                                onBlue ? "bg-white/[0.06]" : "bg-ink/35 ring-1 ring-line"
+                                            }`}
+                                            style={{
+                                                backgroundImage: `radial-gradient(${onBlue ? "rgba(255,255,255,0.14)" : "rgba(176,215,249,0.09)"} 1px, transparent 1px)`,
+                                                backgroundSize: "18px 18px",
+                                            }}
+                                        >
+                                            {(["left-3 top-3 border-l border-t", "right-3 top-3 border-r border-t", "bottom-3 left-3 border-b border-l", "bottom-3 right-3 border-b border-r"] as const).map((pos) => (
+                                                <span
+                                                    key={pos}
+                                                    aria-hidden
+                                                    className={`pointer-events-none absolute size-4 ${pos} ${onBlue ? "border-white/60" : "border-cobalt-hi"}`}
+                                                />
+                                            ))}
+                                            {s.visual}
+                                        </div>
                                     </div>
+                                    <div data-stack-dim className="pointer-events-none absolute inset-0 bg-ink opacity-0" aria-hidden />
                                 </div>
-                                <div className="flex w-full items-center *:w-full">{s.visual}</div>
-                                <div data-stack-dim className="pointer-events-none absolute inset-0 bg-ink opacity-0" aria-hidden />
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </section>

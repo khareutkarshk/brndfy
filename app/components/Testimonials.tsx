@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useReducedMotion, type PanInfo } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
 import SplitReveal from "./fx/SplitReveal";
+import Eyebrow from "./fx/Eyebrow";
 import indmoney from "@/assets/logos/Influencer-brand-logos/INDmoney.png";
 import slice from "@/assets/logos/Influencer-brand-logos/Slice.png";
 import vyapar from "@/assets/logos/Influencer-brand-logos/Vyapar.png";
@@ -63,7 +64,7 @@ const POSE = [
  * Chapter eight. Partner quotes as a physical deck: drag the top card away
  * (or use the arrows) and it returns to the back of the pile.
  */
-const Testimonials = () => {
+const Testimonials = ({ index = "08" }: { index?: string }) => {
     const reduce = useReducedMotion();
     const [order, setOrder] = useState(() => TESTIMONIALS.map((_, i) => i));
     const [leaving, setLeaving] = useState<{ id: number; dir: 1 | -1 } | null>(null);
@@ -90,10 +91,11 @@ const Testimonials = () => {
     const current = TESTIMONIALS[order[0]];
 
     return (
-        <section id="testimonials" className="relative overflow-hidden bg-ink px-4 py-24 sm:px-10 lg:px-16 lg:py-32">
-            <div className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-16 lg:grid-cols-12">
+        <section id="testimonials" data-tone="deep" className="relative overflow-hidden px-4 py-20 sm:px-10 lg:px-16 lg:py-28">
+            <div data-recede className="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-16 lg:grid-cols-12">
                 <div className="lg:col-span-5">
-                    <SplitReveal className="max-w-[14ch] font-display text-[clamp(2rem,4.4vw,4rem)] font-light leading-[1.05] tracking-[-0.035em] text-paper">
+                    <Eyebrow index={index} label="Testimonials" />
+                    <SplitReveal className="chapter-title max-w-[14ch]">
                         In their <span className="font-semibold">own words.</span>
                     </SplitReveal>
                     <p className="mt-6 max-w-[40ch] text-lg text-mute">What marketing teams say after a campaign wraps.</p>

@@ -57,8 +57,9 @@ export default function Odometer({ value, className = "" }: { value: string; cla
                         </span>
                     </span>
                 ) : (
+                    // Flex children collapse plain spaces ("10 Lakh+"), so keep them as non-breaking
                     <span key={i} aria-hidden>
-                        {ch}
+                        {ch === " " ? "\u00A0" : ch}
                     </span>
                 ),
             )}
