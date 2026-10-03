@@ -60,9 +60,9 @@ const Numbers = () => {
                         className="relative flex min-h-[260px] flex-col justify-between overflow-hidden rounded-[28px] border border-line bg-ink-2 p-7 sm:p-9 md:col-span-2"
                     >
                         <span className="text-outline pointer-events-none absolute -bottom-10 -right-2 opacity-40 select-none font-display text-[11rem] font-bold leading-none tracking-[-0.06em] sm:text-[14rem]">
-                            55M
+                            105M
                         </span>
-                        <Odometer value="55M+" className="relative font-display text-[clamp(3.5rem,6vw,5.5rem)] font-semibold tracking-[-0.04em] text-paper" />
+                        <Odometer value="105M+" className="relative font-display text-[clamp(3.5rem,6vw,5.5rem)] font-semibold tracking-[-0.04em] text-paper" />
                         <p className="relative mt-6 max-w-[30ch] text-mute">Organic views generated through creator-led brand campaigns.</p>
                     </motion.div>
 

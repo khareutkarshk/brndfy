@@ -265,7 +265,7 @@ We took a blind-marketing approach: no tags, no collab posts and not even a sing
 
 | 20 | 5M+ | 4.5% | 16,200+ |
 |---|---|---|---|
-| Macro & Micro Creators Activated | Total Views Generated | Engagement Rate | Total Leads Generated |
+| Macro & Mega Creators Activated | Total Views Generated | Engagement Rate | Total Leads Generated |
 
 ### Creator Highlights
 

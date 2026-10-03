@@ -165,7 +165,7 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
     whatWeDid:
       "No tags, no collab posts and not a single mention of Polaris. Curiosity-led content that felt completely organic turned creator videos into high-engagement conversations and a flood of PSAT leads.",
     stats: [
-      { value: "20", label: "Macro & micro creators" },
+      { value: "20", label: "Macro & Mega creators" },
       { value: "5M+", label: "Total views" },
       { value: "4.5%", label: "Engagement rate" },
       { value: "16,200+", label: "Leads generated" },
