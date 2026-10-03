@@ -335,7 +335,7 @@ const Work = () => {
                             </nav>
 
                             <Link href="/case-studies" className="group inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-paper">
-                                Campus campaigns
+                                Brand Activations
                                 <ArrowRight weight="bold" className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                             </Link>
                         </div>
@@ -346,7 +346,7 @@ const Work = () => {
                             <CaseArticle key={study.slug} study={study} onOpen={(reel, brand) => setPlaying({ reel, brand })} />
                         ))}
                         <Link href="/case-studies" className="group mt-4 inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-paper lg:hidden">
-                            Campus campaigns
+                            Brand Activations
                             <ArrowRight weight="bold" className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                         </Link>
                     </div>

@@ -44,7 +44,7 @@ YT Video - https://youtu.be/hFhZ_SCsfMw?si=TK2IOuU0nsxyF6mW
 3. Love Babbar - https://www.youtube.com/@LoveBabbar
 YT Video - https://youtu.be/SkOBlVrjGW8
 
-4. Marketfeed - https://www.youtube.com/@marketfeedbyShariqueSamsudheen
+4. Marketfeed - https://www.youtube.com/@marketfeedapp
 YT Video - https://youtu.be/42b6uK_UUFU?si=vcDhs1s_geecjNgK
 
 5. Info Geeks - https://www.youtube.com/@INFOGEEKS

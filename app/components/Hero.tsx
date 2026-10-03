@@ -119,7 +119,7 @@ export default function Hero() {
 
                 <div className="mt-8 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-end lg:justify-between">
                     <p data-hero-fade className="max-w-[44ch] text-base leading-relaxed text-mute sm:text-lg">
-                        We match brands with creators in finance and edutainment, then measure what the content actually moves.
+                        We match brands with creators in Finance and Edutainment, then measure what the content actually moves.
                     </p>
                     <div data-hero-fade className="flex flex-wrap items-center gap-3">
                         <MagneticButton href="/contact">Start a campaign</MagneticButton>

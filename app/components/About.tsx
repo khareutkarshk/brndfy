@@ -8,7 +8,7 @@ import { MARK_D_PATH, MARK_VIEWBOX } from "./fx/BrndfyMark";
 gsap.registerPlugin(ScrollTrigger);
 
 const STATEMENT =
-    "We're Brndfy Media, a finance-first influencer marketing and talent management company, built for both sides of the deal.";
+    "We're Brndfy Media, a Finance-First Influencer Marketing and Talent Management Company, built for both sides of the deal.";
 const HIGHLIGHT = new Set(["finance-first", "both", "sides"]);
 
 /**
