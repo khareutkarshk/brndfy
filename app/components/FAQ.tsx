@@ -1,7 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Plus } from "@phosphor-icons/react";
+import SplitReveal from "./fx/SplitReveal";
+import Eyebrow from "./fx/Eyebrow";
 
 const FAQS = [
     {
@@ -36,68 +39,54 @@ const FAQS = [
     },
 ];
 
-const FAQ = () => {
+/** `index` is the chapter number on the host page; `items` swaps in page-specific questions */
+const FAQ = ({ index = "09", items = FAQS }: { index?: string; items?: { question: string; answer: string }[] }) => {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-    const toggle = (index: number) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
-
     return (
-        <section id="faq" className=" rounded-2xl px-8 py-16 md:px-16">
-            {/* Section Label */}
-            <p className="text-secondary font-medium text-sm mb-8 tracking-wide">
-                / FAQ&apos;s
-            </p>
-
-            <div className="flex flex-col md:flex-row gap-12 md:gap-16 items-start">
-                {/* Left Heading */}
-                <div className="md:w-2/5 shrink-0">
-                    <h2 className="text-4xl md:text-5xl font-bold text-secondary leading-tight">
-                        Some Questions
-                    </h2>
-                    <h2 className="text-4xl md:text-5xl italic text-primary leading-tight font-serif font-normal">
-                        For Our Client
-                    </h2>
+        <section id="faq" className="relative px-4 py-20 sm:px-10 lg:px-16 lg:py-28">
+            <div data-recede className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+                <div className="lg:col-span-4">
+                    <div className="lg:sticky lg:top-28">
+                        <Eyebrow index={index} label="FAQ" />
+                        <SplitReveal className="chapter-title max-w-[12ch]">
+                            Questions, <span className="font-semibold">answered.</span>
+                        </SplitReveal>
+                        <p className="mt-6 max-w-[34ch] text-mute">
+                            Anything else? Write to{" "}
+                            <a href="mailto:business@brndfy.com" className="text-paper underline underline-offset-4 hover:text-accent">
+                                business@brndfy.com
+                            </a>
+                        </p>
+                    </div>
                 </div>
 
-                {/* Right Accordion */}
-                <div className="flex-1 flex flex-col gap-3">
-                    {FAQS.map((faq, index) => {
-                        const isOpen = openIndex === index;
+                <div className="lg:col-span-8">
+                    {items.map((faq, i) => {
+                        const isOpen = openIndex === i;
                         return (
-                            <div
-                                key={index}
-                                style={{ backgroundColor: isOpen ? "#E8F3FE" : "#B0D7F9" }}
-                                className="border border-primary overflow-hidden transition-colors duration-300"
-                            >
+                            <div key={faq.question} className="border-b border-line first:border-t">
                                 <button
-                                    onClick={() => toggle(index)}
-                                    className="w-full flex items-center justify-between px-6 py-4 text-left cursor-pointer"
+                                    onClick={() => setOpenIndex(isOpen ? null : i)}
+                                    aria-expanded={isOpen}
+                                    className="group flex w-full items-center justify-between gap-6 py-6 text-left sm:py-8"
                                 >
-                                    <span className="text-secondary font-medium text-sm pr-4">
+                                    <span
+                                        className={`font-display text-lg font-normal leading-snug tracking-[-0.01em] transition-colors duration-300 sm:text-2xl ${
+                                            isOpen ? "text-paper" : "text-paper/70 group-hover:text-paper"
+                                        }`}
+                                    >
                                         {faq.question}
                                     </span>
-                                    <motion.div
+                                    <motion.span
                                         animate={{ rotate: isOpen ? 45 : 0 }}
-                                        transition={{ duration: 0.25, ease: "easeInOut" }}
-                                        className="shrink-0 w-7 h-7 rounded-full border border-secondary/40 flex items-center justify-center"
+                                        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                                        className={`grid size-10 shrink-0 place-items-center rounded-full transition-colors duration-300 ${
+                                            isOpen ? "bg-primary text-white" : "border border-paper/20 text-paper group-hover:border-paper/50"
+                                        }`}
                                     >
-                                        <svg
-                                            width="14"
-                                            height="14"
-                                            viewBox="0 0 14 14"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M7 1V13M1 7H13"
-                                                stroke="#0D1350"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                            />
-                                        </svg>
-                                    </motion.div>
+                                        <Plus weight="bold" className="size-4" />
+                                    </motion.span>
                                 </button>
 
                                 <AnimatePresence initial={false}>
@@ -107,12 +96,10 @@ const FAQ = () => {
                                             initial={{ height: 0, opacity: 0 }}
                                             animate={{ height: "auto", opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                                            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                                             className="overflow-hidden"
                                         >
-                                            <p className="px-6 pb-5 text-secondary/70 text-sm leading-relaxed">
-                                                {faq.answer}
-                                            </p>
+                                            <p className="max-w-[62ch] pb-8 pr-16 leading-relaxed text-mute">{faq.answer}</p>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>

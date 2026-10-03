@@ -1,7 +1,10 @@
 "use client";
 import FAQ from "../components/FAQ";
 import React, { useState } from "react";
-import Image from "next/image";
+import { ArrowRight, CheckCircle } from "@phosphor-icons/react";
+import PageShell from "../components/page/PageShell";
+import SplitReveal from "../components/fx/SplitReveal";
+import Eyebrow from "../components/fx/Eyebrow";
 
 const SOCIALS = [
     {
@@ -59,11 +62,14 @@ const Field = ({
     error?: string;
 }) => {
     const base =
-        "w-full bg-white border border-secondary/15 rounded-xl px-4 py-3 text-secondary placeholder:text-secondary/35 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none";
+        `w-full resize-none rounded-[18px] border bg-ink/60 px-5 py-4 text-paper placeholder:text-mute/60 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 ${
+            error ? "border-red-400/70" : "border-line focus:border-primary"
+        }`;
     return (
-        <div className="flex flex-col gap-1.5">
-            <label htmlFor={id} className="text-xs font-semibold text-secondary/60 tracking-wide uppercase">
-                {label}{required && <span className="text-primary ml-0.5">*</span>}
+        <div className="flex flex-col gap-2">
+            <label htmlFor={id} className="font-mono text-[11px] uppercase tracking-[0.18em] text-mute">
+                {label}
+                {required && <span className="ml-0.5 text-cobalt-hi">*</span>}
             </label>
             {textarea ? (
                 <textarea
@@ -84,7 +90,7 @@ const Field = ({
                     className={base}
                 />
             )}
-            {error && <p className="text-xs text-red-500 mt-0.5">{error}</p>}
+            {error && <p className="mt-0.5 text-xs text-red-400">{error}</p>}
         </div>
     );
 };
@@ -138,176 +144,93 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="bg-white p-3 rounded-2xl flex flex-col gap-3 min-h-screen">
-
-            {/* ── HERO ── */}
-            <div className="relative rounded-2xl min-h-[60vh] lg:min-h-[75vh] w-full bg-secondary overflow-hidden">
-                {/* Background */}
-                <Image
-                    src="/bg.png"
-                    alt="Contact Hero Background"
-                    fill
-                    className="object-cover"
-                    priority
+        <PageShell>
+            {/* Opening chapter doubles as the contact sheet: the ask on the left, the form on the right */}
+            <section className="relative isolate overflow-hidden px-4 pb-20 pt-36 sm:px-10 lg:px-16 lg:pb-28 lg:pt-44">
+                <div className="pointer-events-none absolute -top-48 left-1/2 -z-10 h-[70%] w-[80%] -translate-x-1/2 rounded-[100%] bg-primary/25 blur-[140px]" />
+                <div
+                    className="pointer-events-none absolute inset-0 -z-10 mask-[radial-gradient(ellipse_at_top,black_20%,transparent_70%)]"
+                    style={{ backgroundImage: "radial-gradient(rgba(176,215,249,0.12) 1px, transparent 1px)", backgroundSize: "22px 22px" }}
                 />
 
-                {/* 3D logo — right side */}
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[55%] lg:w-[45%] h-full flex items-center justify-end pr-8 sm:pr-16 lg:pr-24 pointer-events-none">
-                    <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-105 lg:h-105">
-                        <Image
-                            src="/logo3d.png"
-                            alt="Brndfy 3D Logo"
-                            fill
-                            className="object-contain drop-shadow-2xl"
-                            priority
-                        />
-                    </div>
-                </div>
+                <div data-recede className="mx-auto grid max-w-[1400px] gap-14 lg:grid-cols-12 lg:gap-16">
+                    <div className="lg:col-span-5">
+                        <Eyebrow index="01" label="Contact" />
+                        <SplitReveal as="h1" className="max-w-[12ch] font-display text-[clamp(2.8rem,6vw,5.6rem)] font-light leading-[0.98] tracking-[-0.045em] text-paper">
+                            Let&apos;s build something <span className="font-semibold">that moves.</span>
+                        </SplitReveal>
+                        <p className="mt-8 max-w-[40ch] text-lg leading-relaxed text-mute">
+                            Tell us the goal and budget. We will come back with the creator mix, usually within 24 hours.
+                        </p>
 
-                {/* Text — left side */}
-                <div className="relative z-10 flex flex-col justify-center min-h-[60vh] lg:min-h-[75vh] px-6 sm:px-12 lg:px-20 pt-28 pb-16 max-w-2xl">
-                    <p className="text-xs sm:text-sm tracking-[0.3em] uppercase text-white/60 font-normal mb-6">
-                        Get In Touch
-                    </p>
-                    <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-none tracking-tight">
-                        Let&apos;s Build<br />
-                        Something<br />
-                        <em className="font-serif italic font-normal text-primary">That Moves.</em>
-                    </h1>
-                </div>
+                        <dl className="mt-12 divide-y divide-line border-y border-line">
+                            {[
+                                { label: "Email", value: "vikash@brndfy.com", href: "mailto:vikash@brndfy.com" },
+                                { label: "Phone", value: "+91 96907 52035", href: "tel:+919690752035" },
+                                { label: "Office", value: "Knowledge Park II, Greater Noida, Uttar Pradesh" },
+                            ].map((row) => (
+                                <div key={row.label} className="grid grid-cols-[88px_1fr] items-baseline gap-4 py-5">
+                                    <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-mute">{row.label}</dt>
+                                    <dd className="text-paper">
+                                        {row.href ? (
+                                            <a href={row.href} className="underline-offset-4 transition-colors hover:text-accent hover:underline">
+                                                {row.value}
+                                            </a>
+                                        ) : (
+                                            row.value
+                                        )}
+                                    </dd>
+                                </div>
+                            ))}
+                        </dl>
 
-                {/* Scroll indicator */}
-                <div className="absolute bottom-8 right-6 sm:right-12 lg:right-20 z-20 flex items-center gap-3 text-white/60">
-                    <span className="text-[10px] uppercase tracking-[0.25em]">Scroll for more</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 5v14M5 12l7 7 7-7" />
-                    </svg>
-                </div>
-            </div>
-
-            {/* ── CONTACT BODY ── */}
-            <section className=" rounded-2xl px-6 sm:px-12 lg:px-20 py-16 lg:py-24">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-
-                    {/* ── LEFT — info ── */}
-                    <div className="lg:col-span-5 flex flex-col gap-10">
-                        <div>
-                            <span className="text-sm font-bold tracking-[0.2em] text-secondary uppercase">
-                                / Let&apos;s Connect
-                            </span>
-                        </div>
-
-                        {/* Info blocks */}
-                        <div className="flex flex-col gap-8">
-                            {/* Address */}
-                            <div className="flex flex-col gap-1.5">
-                                <p className="text-xs font-bold tracking-[0.15em] uppercase text-secondary">Address</p>
-                                <p className="text-secondary text-sm leading-relaxed">
-                                    Knowledge Park II, Greater Noida,<br />Uttar Pradesh, India
-                                </p>
-                            </div>
-
-                            {/* Email */}
-                            <div className="flex flex-col gap-1.5">
-                                <p className="text-xs font-bold tracking-[0.15em] uppercase text-secondary">Email</p>
+                        <div className="mt-8 flex items-center gap-3">
+                            {SOCIALS.map((s) => (
                                 <a
-                                    href="mailto:vikash@brndfy.com"
-                                    className="text-secondary text-sm hover:text-primary transition-colors"
+                                    key={s.label}
+                                    href={s.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={s.label}
+                                    className="grid size-11 place-items-center rounded-full border border-paper/20 text-paper transition-colors hover:border-primary hover:bg-primary hover:text-white"
                                 >
-                                    vikash@brndfy.com
+                                    {s.icon}
                                 </a>
-                            </div>
-
-                            {/* Phone */}
-                            <div className="flex flex-col gap-1.5">
-                                <p className="text-xs font-bold tracking-[0.15em] uppercase text-secondary">Phone</p>
-                                <div className="flex flex-col gap-1">
-                                    <a href="tel:+919690752035" className="text-secondary text-sm hover:text-primary transition-colors">
-                                        +91 9690752035
-                                    </a>
-                                   
-                                </div>
-                            </div>
-
-                            {/* Follow Us */}
-                            <div className="flex flex-col gap-3">
-                                <p className="text-xs font-bold tracking-[0.15em] uppercase text-secondary/50">Follow Us</p>
-                                <div className="flex items-center gap-3">
-                                    {SOCIALS.map((s) => (
-                                        <a
-                                            key={s.label}
-                                            href={s.href}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            aria-label={s.label}
-                                            className="w-10 h-10 rounded-full border border-secondary/15 flex items-center justify-center text-secondary hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
-                                        >
-                                            {s.icon}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
 
-                    {/* ── RIGHT — form ── */}
                     <div className="lg:col-span-7">
-                        <div className="bg-white rounded-2xl">
-                            <div className="mb-8">
-                                <span className="text-xs font-bold tracking-[0.2em] text-secondary uppercase">
-                                    / Send Us A Message
-                                </span>
-                                <p className="text-secondary/60 text-sm mt-2 leading-relaxed">
-                                    Fill out the form below and we&apos;ll get back to you within 24 hours.
-                                </p>
-                            </div>
+                        <div className="relative overflow-hidden rounded-[28px] border border-line bg-ink-2 p-6 sm:p-10">
+                            <div className="pointer-events-none absolute -right-32 -top-32 size-96 rounded-full bg-primary/15 blur-3xl" />
+                            <p className="relative font-mono text-[11px] uppercase tracking-[0.18em]">
+                                <span className="text-cobalt-hi">02</span> <span className="text-paper">Send us a message</span>
+                            </p>
 
-                            {/* Success state */}
                             {status === "success" ? (
-                                <div className="flex flex-col items-center justify-center gap-5 py-14 text-center">
-                                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1744FF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M20 6L9 17l-5-5" />
-                                        </svg>
-                                    </div>
+                                <div className="relative flex flex-col items-start gap-5 py-14">
+                                    <CheckCircle weight="fill" className="size-14 text-primary" />
                                     <div>
-                                        <h3 className="text-secondary text-lg font-bold tracking-tight">Message Sent!</h3>
-                                        <p className="text-secondary/60 text-sm mt-1">
-                                            Thanks for reaching out. We&apos;ll get back to you within 24 hours.
-                                        </p>
+                                        <h2 className="font-display text-3xl font-medium tracking-[-0.03em] text-paper">Message sent.</h2>
+                                        <p className="mt-2 text-mute">Thanks for reaching out. We will get back to you within 24 hours.</p>
                                     </div>
                                     <button
                                         onClick={() => setStatus("idle")}
-                                        className="text-primary text-sm font-semibold underline underline-offset-4 hover:opacity-70 transition-opacity"
+                                        className="rounded-full border border-paper/20 px-5 py-2.5 text-sm text-paper transition-colors hover:border-paper/60"
                                     >
                                         Send another message
                                     </button>
                                 </div>
                             ) : (
-                                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
-                                    <Field
-                                        label="Your Name"
-                                        id="name"
-                                        placeholder="Full Name"
-                                        value={name}
-                                        onChange={setName}
-                                        required
-                                        error={errors.name}
-                                    />
-                                    <Field
-                                        label="Email"
-                                        id="email"
-                                        type="email"
-                                        placeholder="Email Address"
-                                        value={email}
-                                        onChange={setEmail}
-                                        required
-                                        error={errors.email}
-                                    />
+                                <form onSubmit={handleSubmit} noValidate className="relative mt-8 flex flex-col gap-6">
+                                    <div className="grid gap-6 sm:grid-cols-2">
+                                        <Field label="Your name" id="name" placeholder="Full name" value={name} onChange={setName} required error={errors.name} />
+                                        <Field label="Email" id="email" type="email" placeholder="you@company.com" value={email} onChange={setEmail} required error={errors.email} />
+                                    </div>
                                     <Field
                                         label="Message"
                                         id="message"
-                                        placeholder="Tell us about your project"
+                                        placeholder="The objective, the budget, the timeline"
                                         value={message}
                                         onChange={setMessage}
                                         required
@@ -316,42 +239,36 @@ export default function ContactPage() {
                                     />
 
                                     {serverError && (
-                                        <p className="text-sm text-red-500 bg-red-50 border border-red-100 rounded-lg px-4 py-3">
-                                            {serverError}
-                                        </p>
+                                        <p className="rounded-[18px] border border-red-400/30 bg-red-400/10 px-5 py-3 text-sm text-red-300">{serverError}</p>
                                     )}
 
-                                    <button
-                                        type="submit"
-                                        disabled={status === "loading"}
-                                        className="mt-2 w-full bg-primary text-white rounded-xl py-3.5 px-6 text-sm font-semibold tracking-wide flex items-center justify-center gap-2 hover:bg-primary/90 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                                    >
-                                        {status === "loading" ? (
-                                            <>
-                                                <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                                                    <path d="M21 12a9 9 0 11-6.219-8.56" />
-                                                </svg>
-                                                Sending…
-                                            </>
-                                        ) : (
-                                            <>
-                                                Send Message
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                                </svg>
-                                            </>
-                                        )}
-                                    </button>
+                                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <p className="text-sm text-mute">We reply within 24 hours.</p>
+                                        <button
+                                            type="submit"
+                                            disabled={status === "loading"}
+                                            className="group inline-flex items-center justify-center gap-3 rounded-full bg-primary py-2 pl-6 pr-2 text-sm font-medium text-white transition-colors hover:bg-cobalt-hi disabled:cursor-not-allowed disabled:opacity-60"
+                                        >
+                                            {status === "loading" ? "Sending…" : "Send message"}
+                                            <span className="grid size-10 place-items-center rounded-full bg-white text-primary transition-transform duration-500 ease-out-expo group-hover:translate-x-0.5">
+                                                {status === "loading" ? (
+                                                    <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                                                        <path d="M21 12a9 9 0 11-6.219-8.56" />
+                                                    </svg>
+                                                ) : (
+                                                    <ArrowRight weight="bold" className="size-4" />
+                                                )}
+                                            </span>
+                                        </button>
+                                    </div>
                                 </form>
                             )}
                         </div>
                     </div>
-
                 </div>
             </section>
 
-            <FAQ />
-
-        </div>
+            <FAQ index="03" />
+        </PageShell>
     );
 }

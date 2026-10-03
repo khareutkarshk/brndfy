@@ -1,6 +1,20 @@
 import React from "react";
-import Image from "next/image";
 import JsonLd from "./JsonLd";
+import FAQ from "./FAQ";
+import MagneticButton from "./fx/MagneticButton";
+import SplitReveal from "./fx/SplitReveal";
+import PageShell from "./page/PageShell";
+import PageHero from "./page/PageHero";
+import Chapter from "./page/Chapter";
+
+// The article arrives as HTML from each city page; style its tags in place
+const ARTICLE = [
+  "[&_article>p:first-of-type]:mt-0 [&_article>p:first-of-type]:font-display [&_article>p:first-of-type]:text-[clamp(1.3rem,2vw,1.7rem)] [&_article>p:first-of-type]:font-light [&_article>p:first-of-type]:leading-[1.35] [&_article>p:first-of-type]:text-paper",
+  "[&_p]:mt-5 [&_p]:text-lg [&_p]:leading-relaxed [&_p]:text-mute [&_strong]:font-medium [&_strong]:text-paper",
+  "[&_h2]:mt-16 [&_h2]:font-display [&_h2]:text-[clamp(1.6rem,2.6vw,2.3rem)] [&_h2]:font-medium [&_h2]:leading-[1.1] [&_h2]:tracking-[-0.03em] [&_h2]:text-paper",
+  "[&_h3]:mt-10 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-medium [&_h3]:tracking-[-0.01em] [&_h3]:text-paper",
+  "[&_ul]:mt-6 [&_ul]:grid [&_ul]:gap-3 sm:[&_ul]:grid-cols-2 [&_li]:rounded-[20px] [&_li]:border [&_li]:border-line [&_li]:bg-ink-2 [&_li]:px-5 [&_li]:py-4 [&_li]:leading-relaxed [&_li]:text-mute",
+].join(" ");
 
 interface LocationPageTemplateProps {
   locationName: string;
@@ -70,106 +84,89 @@ const LocationPageTemplate: React.FC<LocationPageTemplateProps> = ({
   };
 
   return (
-    <div className="bg-white p-3 rounded-2xl flex flex-col gap-6">
+    <PageShell>
       <JsonLd data={localBusinessSchema} />
       <JsonLd data={faqSchema} />
 
-      {/* Hero Section */}
-      <section className="relative rounded-2xl overflow-hidden min-h-[60vh] flex items-center justify-center bg-secondary text-white p-6 sm:p-12">
-        {/* Background pattern or subtle image could go here */}
-        <div className="relative z-10 text-center max-w-4xl">
-          <span className="text-primary font-bold tracking-widest uppercase text-sm mb-4 block">
-            Top Marketing Agency in {locationName}
-          </span>
-          <h1 className="text-4xl sm:text-6xl font-black mb-6 leading-tight">
-            {h1}
-          </h1>
-          <p className="text-lg opacity-80 mb-8 max-w-2xl mx-auto">
-            {description}
-          </p>
-          <div className="flex justify-center gap-4">
-            <a
-              href="/contact"
-              className="px-8 py-4 bg-primary text-white rounded-md font-bold hover:bg-primary/90 transition-all"
-            >
-              Get a Free Audit
-            </a>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        label={`Marketing agency · ${locationName}`}
+        title={h1}
+        titleClassName="max-w-[20ch] text-[clamp(2.4rem,5.2vw,4.8rem)]"
+        intro={description}
+        actions={
+          <>
+            <MagneticButton href="/contact">Get a free audit</MagneticButton>
+            <MagneticButton href="/#work" variant="ghost">
+              See our work
+            </MagneticButton>
+          </>
+        }
+      />
 
-      {/* Content Section */}
-      <section className="max-w-7xl mx-auto py-16 px-6 sm:px-12 grid lg:grid-cols-3 gap-12">
-        <div className="lg:col-span-2 prose prose-lg prose-invert text-secondary">
-          <div dangerouslySetInnerHTML={{ __html: content }} />
+      <Chapter index="02" label={`Why ${locationName}`}>
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+          <div className={`lg:col-span-7 ${ARTICLE}`} dangerouslySetInnerHTML={{ __html: content }} />
 
-          <h2 className="text-3xl font-bold mt-12 mb-6">
-            Key Landmarks Near Us in {locationName}
-          </h2>
-          <ul className="list-disc pl-6 grid sm:grid-cols-2 gap-2">
-            {landmarks.map((landmark) => (
-              <li key={landmark}>{landmark}</li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Sidebar / Map */}
-        <div className="flex flex-col gap-8">
-          <div className="rounded-2xl overflow-hidden h-80 border-4 border-secondary/5">
-            <iframe
-              src={mapEmbedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen={true}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-
-          <div className="bg-secondary/5 p-8 rounded-2xl">
-            <h3 className="text-2xl font-bold mb-4">
-              Why Choose BRNDFY in {locationName}?
-            </h3>
-            <p className="text-secondary/70">
-              We combine local insights with national-scale activation power.
-              From Janpath to Greater Noida, we know how to reach the youth
-              where they are.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="bg-secondary p-12 rounded-2xl text-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-6">
-            {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-white/10 pb-6">
-                <h3 className="text-xl font-bold mb-3">{faq.question}</h3>
-                <p className="text-white/70">{faq.answer}</p>
+          <aside className="flex flex-col gap-3 lg:col-span-5">
+            <div className="lg:sticky lg:top-28 flex flex-col gap-3">
+              <div className="relative h-80 overflow-hidden rounded-[28px] ring-1 ring-line">
+                {/* Invert and rotate the hue so the light map sits on ink */}
+                <iframe
+                  src={mapEmbedUrl}
+                  title={`Map of ${locationName}`}
+                  className="size-full [filter:invert(0.92)_hue-rotate(180deg)_saturate(0.7)]"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
-            ))}
-          </div>
+              <div className="relative overflow-hidden rounded-[28px] bg-primary p-8">
+                <div className="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-white/10 blur-3xl" />
+                <p className="relative font-mono text-[11px] uppercase tracking-[0.18em] text-white/75">Why Brndfy in {locationName}</p>
+                <p className="relative mt-6 font-display text-xl font-medium leading-snug tracking-[-0.015em] text-white">
+                  We combine local insights with national-scale activation power. From Janpath to Greater Noida, we know how to reach the youth
+                  where they are.
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </Chapter>
+
+      <Chapter
+        index="03"
+        label="On the ground"
+        title={
+          <>
+            Key landmarks near us <span className="font-semibold">in {locationName}.</span>
+          </>
+        }
+      >
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {landmarks.map((landmark, i) => (
+            <li key={landmark} className="flex items-baseline gap-4 rounded-[20px] border border-line bg-ink-2 px-5 py-5">
+              <span className="font-mono text-[11px] text-cobalt-hi">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-paper">{landmark}</span>
+            </li>
+          ))}
+        </ul>
+      </Chapter>
+
+      <FAQ index="04" items={faqs} />
+
+      <section className="px-4 pb-20 sm:px-10 lg:px-16 lg:pb-28">
+        <div className="relative mx-auto flex max-w-[1400px] flex-col gap-10 overflow-hidden rounded-[28px] bg-primary p-8 sm:p-12 lg:flex-row lg:items-end lg:justify-between lg:p-16">
+          <div className="pointer-events-none absolute -right-32 -top-32 size-[28rem] rounded-full bg-white/10 blur-3xl" />
+          <SplitReveal className="relative max-w-[16ch] font-display text-[clamp(2.2rem,5vw,4.6rem)] font-light leading-[1] tracking-[-0.045em] text-white">
+            Ready to scale your brand <span className="font-semibold">in {locationName}?</span>
+          </SplitReveal>
+          <MagneticButton href="/contact" variant="light" className="relative">
+            Start your campaign
+          </MagneticButton>
         </div>
       </section>
-
-      {/* Footer CTA */}
-      <section className="py-20 text-center bg-primary text-white rounded-2xl">
-        <h2 className="text-3xl sm:text-5xl font-black mb-8">
-          Ready to Scale Your Brand in {locationName}?
-        </h2>
-        <a
-          href="/contact"
-          className="px-12 py-5 bg-white text-primary rounded-md font-black text-xl hover:scale-105 transition-transform inline-block"
-        >
-          Start Your Campaign Now
-        </a>
-      </section>
-    </div>
+    </PageShell>
   );
 };
 

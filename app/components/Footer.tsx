@@ -1,155 +1,100 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const NAV = [
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "/about" },
+    { name: "Work", href: "/#work" },
+    { name: "Case studies", href: "/case-studies" },
+    { name: "Creators", href: "/#creators" },
+    { name: "Services", href: "/#services" },
+    { name: "Contact Us", href: "/contact" },
+];
+
+const SOCIAL = [
+    { name: "Instagram", href: "https://www.instagram.com/brndfymedia/" },
+    { name: "LinkedIn", href: "https://www.linkedin.com/company/marketmafiaa/posts/?feedView=all" },
+    { name: "WhatsApp", href: "https://wa.me/919690752035" },
+];
+
+const LOCATIONS = [
+    { name: "Delhi", href: "/marketing-agency-delhi" },
+    { name: "Delhi NCR", href: "/marketing-agency-ncr" },
+    { name: "Greater Noida", href: "/marketing-agency-greater-noida" },
+    { name: "India", href: "/marketing-agency-india" },
+];
+
+const linkCls = "text-sm text-paper/70 transition-colors hover:text-paper";
+
 const Footer = () => {
-    const navLinks = [
-        { name: "Home", href: "/" },
-        { name: "About Us", href: "/about" },
-        { name: "Work", href: "/#work" },
-        { name: "Services", href: "/#services" },
-        { name: "Contact Us", href: "/contact" },
-    ];
-
-    const socialLinks = [
-        { name: "Instagram", href: "https://www.instagram.com/brndfymedia/" },
-        { name: "LinkedIn", href: "https://www.linkedin.com/company/marketmafiaa/posts/?feedView=all" },
-        { name: "Whatsapp", href: "https://wa.me/919690752035" },
-    ];
-
     return (
-        <footer className="relative rounded-2xl overflow-hidden">
-            {/* Background */}
-            <Image
-                src="/Footer.avif"
-                alt="Footer background"
-                fill
-                className="object-cover object-center"
-                priority={false}
-            />
+        <footer className="relative overflow-hidden rounded-[28px] bg-ink-2 text-paper ring-1 ring-line">
+            <div className="pointer-events-none absolute -bottom-1/2 left-1/2 h-full w-[120%] -translate-x-1/2 rounded-[100%] bg-primary/20 blur-[120px]" />
 
-
-            {/* Content */}
-            <div className="relative z-10 px-8 pt-16 pb-8 md:px-16">
-
-                {/* Top row */}
-                <div className="flex flex-col lg:flex-row lg:justify-between gap-12 pb-16">
-
-                    {/* Left — brand block */}
-                    <div className="flex flex-col gap-6 max-w-xs">
-                        {/* Logo */}
-                        <Link href="/" className="shrink-0 w-fit">
-                            <Image
-                                src="/brndfy_logo.png"
-                                alt="Brndfy Logo"
-                                width={130}
-                                height={44}
-                                className="h-9 w-auto object-contain"
-                            />
-                        </Link>
-
-                        {/* Tagline */}
-                        <p className="text-white text-sm leading-relaxed">
-                            Building Culture.
-                            <br />Not Just Campaigns.
+            <div className="relative mx-auto max-w-[1400px] px-6 pt-16 sm:px-10 lg:px-16">
+                <div className="grid grid-cols-2 gap-10 pb-16 md:grid-cols-4 lg:grid-cols-12">
+                    <div className="col-span-2 flex flex-col gap-6 lg:col-span-5">
+                        <p className="max-w-[22ch] font-display text-2xl font-light leading-tight tracking-[-0.02em] text-paper">
+                            Building culture. <span className="font-semibold">Not just campaigns.</span>
                         </p>
-
-                        {/* Address */}
-                        <p className="text-white text-sm leading-relaxed">
-                            J-27, Gama -II, Greater Noida, 201308
-                            <br />Uttar Pradesh, India
-                        </p>
-
-                        {/* Contact */}
-                        <div className="flex flex-col gap-2 mt-2">
-                            {/* Emails */}
-                            <div className="flex flex-row gap-2 flex-nowrap">
-                                <a
-                                    href="mailto:vikash@brndfy.com"
-                                    className="inline-flex items-center gap-2 text-white text-sm border border-white/10 rounded-full px-4 py-1.5 w-fit hover:text-white hover:border-white/30 transition-colors"
-                                >
-                                    vikash@brndfy.com
-                                </a>
-
-                                <a
-                                    href="mailto:business@brndfy.com"
-                                    className="inline-flex items-center gap-2 text-white text-sm border border-white/10 rounded-full px-4 py-1.5 w-fit hover:text-white hover:border-white/30 transition-colors"
-                                >
-                                    business@brndfy.com
-                                </a>
-                            </div>
-
-                            {/* Contact Number */}
-                            <div>
-                                <a
-                                    href="tel:+919690752035"
-                                    className="inline-flex items-center gap-2 text-white text-sm border border-white/10 rounded-full px-4 py-1.5 w-fit hover:text-white hover:border-white/30 transition-colors"
-                                >
-                                    +919690752035
-                                </a>
-                            </div>
+                        <div className="flex flex-wrap gap-2">
+                            <a href="mailto:business@brndfy.com" className="rounded-full border border-paper/15 px-4 py-2 text-sm text-paper transition-colors hover:border-paper/50">
+                                business@brndfy.com
+                            </a>
+                            <a href="mailto:vikash@brndfy.com" className="rounded-full border border-paper/15 px-4 py-2 text-sm text-paper transition-colors hover:border-paper/50">
+                                vikash@brndfy.com
+                            </a>
+                            <a href="tel:+919690752035" className="rounded-full border border-paper/15 px-4 py-2 text-sm text-paper transition-colors hover:border-paper/50">
+                                +91 96907 52035
+                            </a>
                         </div>
+                        <p className="text-sm leading-relaxed text-mute">
+                            J-27, Gama-II, Greater Noida 201308
+                            <br />
+                            Uttar Pradesh, India
+                        </p>
                     </div>
 
-                    {/* Right — nav columns */}
-                    <div className="flex flex-row gap-16 lg:gap-24">
-                        {/* Navigation */}
-                        <div className="flex flex-col gap-4">
-                            <p className="text-white text-sm font-semibold tracking-wide">
-                                Navigation
-                            </p>
-                            <nav className="flex flex-col gap-3">
-                                {navLinks.map((link) => (
-                                    <Link
-                                        key={link.name}
-                                        href={link.href}
-                                        className="text-white text-sm hover:text-white transition-colors"
-                                    >
-                                        {link.name}
-                                    </Link>
-                                ))}
-                            </nav>
-                        </div>
-
-                        {/* Follow Us On */}
-                        <div className="flex flex-col gap-4">
-                            <p className="text-white text-sm font-semibold tracking-wide">
-                                Follow Us On
-                            </p>
-                            <nav className="flex flex-col gap-3">
-                                {socialLinks.map((link) => (
-                                    <a
-                                        key={link.name}
-                                        href={link.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-white text-sm hover:text-white transition-colors"
-                                    >
-                                        {link.name}
-                                    </a>
-                                ))}
-                            </nav>
-                        </div>
-
-                        {/* Locations */}
-                        <div className="hidden flex-col gap-4 sm:flex">
-                            <p className="text-white text-sm font-semibold tracking-wide">
-                                Locations
-                            </p>
-                            <nav className="flex flex-col gap-3">
-                                <Link href="/marketing-agency-delhi" className="text-white text-sm hover:text-white transition-colors">Delhi</Link>
-                                <Link href="/marketing-agency-ncr" className="text-white text-sm hover:text-white transition-colors">Delhi NCR</Link>
-                                <Link href="/marketing-agency-greater-noida" className="text-white text-sm hover:text-white transition-colors">Greater Noida</Link>
-                                <Link href="/marketing-agency-india" className="text-white text-sm hover:text-white transition-colors">India</Link>
-                            </nav>
-                        </div>
+                    <nav className="flex flex-col gap-3 lg:col-span-2 lg:col-start-7" aria-label="Footer">
+                        <p className="mb-1 font-display text-sm font-medium text-paper">Navigate</p>
+                        {NAV.map((l) => (
+                            <Link key={l.name} href={l.href} className={linkCls}>
+                                {l.name}
+                            </Link>
+                        ))}
+                    </nav>
+                    <div className="flex flex-col gap-3 lg:col-span-2">
+                        <p className="mb-1 font-display text-sm font-medium text-paper">Follow</p>
+                        {SOCIAL.map((l) => (
+                            <a key={l.name} href={l.href} target="_blank" rel="noopener noreferrer" className={linkCls}>
+                                {l.name}
+                            </a>
+                        ))}
+                    </div>
+                    <div className="flex flex-col gap-3 lg:col-span-2">
+                        <p className="mb-1 font-display text-sm font-medium text-paper">Locations</p>
+                        {LOCATIONS.map((l) => (
+                            <Link key={l.name} href={l.href} className={linkCls}>
+                                {l.name}
+                            </Link>
+                        ))}
                     </div>
                 </div>
 
-                {/* Bottom — copyright */}
-                <div className="pt-6 flex items-center justify-center">
-                    <p className="text-white text-sm">
-                        © {new Date().getFullYear()} Brndfy. All rights reserved.
-                    </p>
+                <Link href="/" aria-label="Brndfy home" className="block">
+                    <Image
+                        src="/brndfy_logo.png"
+                        alt="Brndfy"
+                        width={2030}
+                        height={421}
+                        sizes="(max-width: 1400px) 100vw, 1400px"
+                        className="h-auto w-full opacity-95"
+                    />
+                </Link>
+
+                <div className="flex flex-col gap-2 py-6 text-xs text-mute sm:flex-row sm:justify-between">
+                    <p>© {new Date().getFullYear()} Brndfy Media. All rights reserved.</p>
+                    <p>Finance-first influencer marketing agency</p>
                 </div>
             </div>
         </footer>
