@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "@phosphor-icons/react";
 import SplitReveal from "./fx/SplitReveal";
+import Eyebrow from "./fx/Eyebrow";
 
 const FAQS = [
     {
@@ -38,15 +39,17 @@ const FAQS = [
     },
 ];
 
-const FAQ = () => {
+/** `index` is the chapter number on the host page; `items` swaps in page-specific questions */
+const FAQ = ({ index = "09", items = FAQS }: { index?: string; items?: { question: string; answer: string }[] }) => {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     return (
-        <section id="faq" className="relative bg-ink px-4 py-24 sm:px-10 lg:px-16 lg:py-32">
-            <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+        <section id="faq" className="relative px-4 py-20 sm:px-10 lg:px-16 lg:py-28">
+            <div data-recede className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
                 <div className="lg:col-span-4">
                     <div className="lg:sticky lg:top-28">
-                        <SplitReveal className="max-w-[12ch] font-display text-[clamp(2rem,4vw,3.6rem)] font-light leading-[1.05] tracking-[-0.035em] text-paper">
+                        <Eyebrow index={index} label="FAQ" />
+                        <SplitReveal className="chapter-title max-w-[12ch]">
                             Questions, <span className="font-semibold">answered.</span>
                         </SplitReveal>
                         <p className="mt-6 max-w-[34ch] text-mute">
@@ -59,12 +62,12 @@ const FAQ = () => {
                 </div>
 
                 <div className="lg:col-span-8">
-                    {FAQS.map((faq, index) => {
-                        const isOpen = openIndex === index;
+                    {items.map((faq, i) => {
+                        const isOpen = openIndex === i;
                         return (
                             <div key={faq.question} className="border-b border-line first:border-t">
                                 <button
-                                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                                    onClick={() => setOpenIndex(isOpen ? null : i)}
                                     aria-expanded={isOpen}
                                     className="group flex w-full items-center justify-between gap-6 py-6 text-left sm:py-8"
                                 >

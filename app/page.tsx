@@ -9,6 +9,7 @@ import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
 import FinalCTA from "./components/FinalCTA";
 import Preloader from "./components/fx/Preloader";
+import ChapterFlow from "./components/fx/ChapterFlow";
 
 /**
  * The home page reads as one story: promise, belief, proof, work,
@@ -28,6 +29,7 @@ export default function Home() {
       <Testimonials />
       <FAQ />
       <FinalCTA />
+      <ChapterFlow />
     </main>
   );
 }

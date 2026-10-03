@@ -94,7 +94,7 @@ const gotham = localFont({
   display: "swap",
 });
 
-// Display face: clean geometric sans whose round bowls echo the D-and-circle mark
+// Display face: clean geometric sans whose round bowls echo the B-and-R mark
 const sora = Sora({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],

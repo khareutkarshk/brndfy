@@ -1,6 +1,6 @@
 /**
- * The Brndfy symbol as two separate shapes: the D-block (brands) and the
- * circle (creators). Geometry traced from /logo3d.png. Each part is exposed
+ * The Brndfy symbol: a fusion of B and R. The top shape is the upper bowl
+ * of the B, the circle below is the leg of the R. Geometry traced from /logo3d.png. Each part is exposed
  * with a data attribute so scroll timelines can move them independently.
  */
 export const MARK_VIEWBOX = "0 0 1340 1920";
