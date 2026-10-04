@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BrndfyMark from "./BrndfyMark";
 import { finishIntro, onModelReady } from "./intro";
 import { getLenis } from "./SmoothScroll";
@@ -65,6 +66,9 @@ export default function Preloader() {
                             sessionStorage.setItem(SEEN_KEY, "1");
                         } catch {}
                         getLenis()?.start();
+                        // Pins were measured while the stopped Lenis hid the scrollbar, so they
+                        // are a scrollbar too wide; re-measure now that it is back
+                        ScrollTrigger.refresh();
                         setGone(true);
                     },
                 })
@@ -98,6 +102,7 @@ export default function Preloader() {
             unsubscribe();
             ctx.revert();
             getLenis()?.start();
+            ScrollTrigger.refresh();
         };
     }, []);
 

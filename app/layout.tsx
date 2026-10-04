@@ -212,7 +212,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${gotham.variable} ${sora.variable} ${geistMono.variable} font-sans antialiased`}>
+      {/* Extensions (e.g. ColorZilla's cz-shortcut-listen) add attributes to body before hydration */}
+      <body suppressHydrationWarning className={`${gotham.variable} ${sora.variable} ${geistMono.variable} font-sans antialiased`}>
         <JsonLd data={organizationSchema} />
         <SmoothScroll />
         <Header />
