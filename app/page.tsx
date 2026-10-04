@@ -1,23 +1,40 @@
+import type { Metadata } from "next";
 import Hero from "./components/Hero";
 import About from "./components/About";
+import Numbers from "./components/Numbers";
+import WorkTeaser from "./components/WorkTeaser";
+import Creators from "./components/Creators";
 import Services from "./components/Services";
-import Work from "./components/Work";
 import Clients from "./components/Clients";
 import Testimonials from "./components/Testimonials";
-import Numbers from "./components/Numbers";
 import FAQ from "./components/FAQ";
+import FinalCTA from "./components/FinalCTA";
+import Preloader from "./components/fx/Preloader";
+import ChapterFlow from "./components/fx/ChapterFlow";
 
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
+/**
+ * The home page reads as one story: promise, belief, proof, work,
+ * the people, the method, the brands, their words, questions, the ask.
+ */
 export default function Home() {
   return (
-    <div className="bg-white p-3 rounded-2xl flex flex-col gap-3">
+    <main className="relative bg-ink text-paper">
+      <Preloader />
       <Hero />
       <About />
       <Numbers />
-      <Work />
+      <WorkTeaser />
+      <Creators />
       <Services />
       <Clients />
       <Testimonials />
       <FAQ />
-    </div>
+      <FinalCTA />
+      <ChapterFlow />
+    </main>
   );
 }

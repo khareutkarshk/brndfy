@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import LocationPageTemplate from '../components/LocationPageTemplate'
 
 export const metadata: Metadata = {
-    title: 'Best Marketing Agency in Greater Noida | BRNDFY',
+    title: 'Best Marketing Agency in Greater Noida',
     description: 'Looking for a digital marketing agency in Greater Noida? We specialize in reaching the student population and industrial sectors of Greater Noida through specialized branding.',
     keywords: ['best marketing agency in Greater Noida', 'SEO agency Greater Noida', 'campus branding Greater Noida'],
     alternates: {

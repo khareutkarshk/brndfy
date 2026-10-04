@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Sora, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HashScrollHandler from "./components/HashScrollHandler";
+import SmoothScroll from "./components/fx/SmoothScroll";
 
 const gotham = localFont({
   src: [
@@ -89,6 +91,22 @@ const gotham = localFont({
     },
   ],
   variable: "--font-gotham",
+  display: "swap",
+});
+
+// Display face: clean geometric sans whose round bowls echo the B-and-R mark
+const sora = Sora({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-sora",
+  display: "swap",
+});
+
+// Data labels and figures
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
 });
 
 import JsonLd from "./components/JsonLd";
@@ -96,7 +114,7 @@ import JsonLd from "./components/JsonLd";
 export const metadata: Metadata = {
   metadataBase: new URL("https://brndfy.com"),
   title: {
-    default: "Building Culture. Not Just Campaigns.",
+    default: "BRNDFY | Influencer Marketing & Youth Marketing Agency in India",
     template: "%s | BRNDFY",
   },
   description:
@@ -154,21 +172,29 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: "https://brndfy.com",
-  },
 };
 
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "BRNDFY",
+  alternateName: "Brndfy",
   url: "https://brndfy.com",
+  description:
+    "Influencer marketing, campus branding and youth activation agency based in Greater Noida, serving Delhi NCR and brands across India.",
+  email: "business@brndfy.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "J-27, Gama-II",
+    addressLocality: "Greater Noida",
+    postalCode: "201308",
+    addressRegion: "Uttar Pradesh",
+    addressCountry: "IN",
+  },
   logo: "https://brndfy.com/brndfy_logo.png",
   sameAs: [
-    "https://www.instagram.com/brndfy",
-    "https://www.linkedin.com/company/brndfy",
-    "https://twitter.com/brndfy",
+    "https://www.instagram.com/brndfymedia/",
+    "https://www.linkedin.com/company/marketmafiaa/",
   ],
   contactPoint: {
     "@type": "ContactPoint",
@@ -186,14 +212,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${gotham.variable} font-sans antialiased`}>
+      {/* Extensions (e.g. ColorZilla's cz-shortcut-listen) add attributes to body before hydration */}
+      <body suppressHydrationWarning className={`${gotham.variable} ${sora.variable} ${geistMono.variable} font-sans antialiased`}>
         <JsonLd data={organizationSchema} />
+        <SmoothScroll />
         <Header />
         <HashScrollHandler />
         {children}
         <div className="p-3">
           <Footer />
         </div>
+        {/* z-index scale: header 60, mobile menu 55, grain 70, video lightbox 85, preloader 90 */}
+        <div className="grain" aria-hidden />
       </body>
     </html>
   );

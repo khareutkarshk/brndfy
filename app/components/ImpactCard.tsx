@@ -1,95 +1,51 @@
-import React from "react";
 import { ImpactStat } from "@/app/data/caseStudies";
+import Odometer from "./fx/Odometer";
+
+// Icons arrive with hard-coded #1744FF paint; recolour them per surface
+const ICON_ON_INK = "[&_svg]:size-7 [&_[stroke='#1744FF']]:stroke-accent [&_[fill='#1744FF']]:fill-accent [&_svg[stroke='#1744FF']]:stroke-accent";
+const ICON_ON_BLUE = "[&_svg]:size-7 [&_[stroke='#1744FF']]:stroke-white [&_[fill='#1744FF']]:fill-white [&_svg[stroke='#1744FF']]:stroke-white";
 
 // ─── Single impact stat card ──────────────────────────────────────────────────
-export function ImpactCard({ stat }: { stat: ImpactStat }) {
+export function ImpactCard({ stat, lead = false }: { stat: ImpactStat; lead?: boolean }) {
     return (
-        <div className="p-6 sm:p-8 flex flex-col gap-4 min-h-44 sm:min-h-52 justify-between h-full">
-            {/* Icon */}
-            <div className="text-primary">
+        <div
+            className={`relative flex h-full min-h-[220px] flex-col justify-between gap-10 overflow-hidden rounded-[28px] p-7 sm:p-9 ${
+                lead ? "bg-primary" : "border border-line bg-ink-2"
+            }`}
+        >
+            {lead && <div className="pointer-events-none absolute -right-24 -top-24 size-80 rounded-full bg-white/10 blur-3xl" />}
+            <div className={`relative grid size-14 place-items-center rounded-full ${lead ? "bg-white/15" : "bg-primary/15"} ${lead ? ICON_ON_BLUE : ICON_ON_INK}`}>
                 {typeof stat.icon === "string" ? (
-                    <svg
-                        width="40"
-                        height="40"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#1744FF"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#1744FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d={stat.icon} />
                     </svg>
                 ) : (
                     stat.icon
                 )}
             </div>
-            
-            {/* Value */}
-            <p className="text-3xl sm:text-4xl lg:text-5xl font-bold italic text-primary leading-none tracking-tight">
-                {stat.value}
-            </p>
-            {/* Label */}
-            <p className="text-sm sm:text-xl font-medium text-secondary/70 leading-snug">
-                {stat.label}
-            </p>
+            <div className="relative">
+                <Odometer
+                    value={stat.value}
+                    className={`font-display font-semibold leading-none tracking-[-0.04em] ${
+                        lead ? "text-[clamp(3.4rem,6vw,5.4rem)] text-white" : "text-[clamp(2.2rem,3.4vw,3rem)] text-paper"
+                    }`}
+                />
+                <p className={`mt-3 text-sm sm:text-base ${lead ? "text-white/85" : "text-mute"}`}>{stat.label}</p>
+            </div>
         </div>
     );
 }
 
-// ─── Staggered 5-stat grid ────────────────────────────────────────────────────
-// Desktop (sm+): 3×3 grid — cards at [r1,c1], [r1,c3], [r2,c2], [r3,c1], [r3,c3]
-// Mobile:        2-col staggered — cards at [r1,c1], [r2,c2], [r3,c1], [r4,c2], [r5,c1]
+// ─── Impact bento ─────────────────────────────────────────────────────────────
+// Five stats: the first leads wide, the rest fill a row of three below it
 export function ImpactGrid({ stats }: { stats: ImpactStat[] }) {
-    const positions: { col: number; row: number }[] = [
-        { col: 1, row: 1 },
-        { col: 3, row: 1 },
-        { col: 2, row: 2 },
-        { col: 1, row: 3 },
-        { col: 3, row: 3 },
-    ];
-
-    const mobilePositions: { col: number; row: number }[] = [
-        { col: 1, row: 1 },
-        { col: 2, row: 2 },
-        { col: 1, row: 3 },
-        { col: 2, row: 4 },
-        { col: 1, row: 5 },
-    ];
-
     return (
-        <>
-            {/* Desktop: 3×3 staggered */}
-            <div className="hidden sm:grid grid-cols-3 grid-rows-3">
-                {stats.slice(0, 5).map((stat, i) => (
-                    <div
-                        key={i}
-                        className="border border-primary/20"
-                        style={{
-                            gridColumn: `${positions[i].col}`,
-                            gridRow: `${positions[i].row}`,
-                        }}
-                    >
-                        <ImpactCard stat={stat} />
-                    </div>
-                ))}
-            </div>
-
-            {/* Mobile: 2-col staggered */}
-            <div className="sm:hidden grid grid-cols-2 grid-rows-5">
-                {stats.slice(0, 5).map((stat, i) => (
-                    <div
-                        key={i}
-                        className="border border-primary/20"
-                        style={{
-                            gridColumn: `${mobilePositions[i].col}`,
-                            gridRow: `${mobilePositions[i].row}`,
-                        }}
-                    >
-                        <ImpactCard stat={stat} />
-                    </div>
-                ))}
-            </div>
-        </>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {stats.map((stat, i) => (
+                <div key={stat.label} className={i === 0 ? "sm:col-span-2" : ""}>
+                    <ImpactCard stat={stat} lead={i === 0} />
+                </div>
+            ))}
+        </div>
     );
 }
