@@ -21,6 +21,7 @@ const HeroScene = dynamic(() => import("./fx/HeroScene"), { ssr: false });
 export default function Hero() {
     const root = useRef<HTMLElement>(null);
     const scene = useRef<SceneState>({ progress: 0, intro: 0 });
+    const slot = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const el = root.current;
@@ -91,7 +92,7 @@ export default function Hero() {
                 <div className="absolute right-[8%] top-[12%] hidden size-[42vw] max-w-[640px] rounded-full bg-primary/20 blur-[140px] lg:block" />
             </div>
 
-            <HeroScene state={scene} onReady={markModelReady} />
+            <HeroScene state={scene} slot={slot} onReady={markModelReady} />
 
             {/* Fade the horizon glow into the next chapter so there is no seam */}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-ink to-transparent" />
@@ -103,6 +104,9 @@ export default function Hero() {
                 data-hero-copy
                 className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-end px-4 pb-10 sm:px-10 lg:px-16 lg:pb-16"
             >
+                {/* Free space between the header and the copy; the mark is fitted into it below lg */}
+                <div ref={slot} aria-hidden className="mb-4 mt-24 min-h-0 flex-1 lg:hidden" />
+
                 <p data-hero-fade className="mb-6 font-mono text-[11px] uppercase tracking-[0.24em] text-accent/80 sm:text-xs">
                     Finance-first influencer marketing agency
                 </p>

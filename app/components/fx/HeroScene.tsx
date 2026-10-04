@@ -21,9 +21,12 @@ export type SceneState = {
  */
 export default function HeroScene({
     state,
+    slot,
     onReady,
 }: {
     state: React.RefObject<SceneState>;
+    /** Below lg, the mark is fitted inside this element's box (header to copy) */
+    slot?: React.RefObject<HTMLElement | null>;
     onReady?: () => void;
 }) {
     const mountRef = useRef<HTMLDivElement>(null);
@@ -91,6 +94,9 @@ export default function HeroScene({
         });
 
         let model: THREE.Object3D | null = null;
+        // Footprint of the normalised mark (2.2 tall); width is updated once the GLB loads
+        let markW = 2.2;
+        let markD = 0.6;
         const loader = new GLTFLoader();
         loader.setMeshoptDecoder(MeshoptDecoder);
         loader.load(
@@ -110,6 +116,9 @@ export default function HeroScene({
                 const center = box.getCenter(new THREE.Vector3());
                 model.position.sub(center);
                 const s = 2.2 / size.y;
+                markW = size.x * s;
+                markD = size.z * s;
+                resize();
                 const holder = new THREE.Group();
                 holder.scale.setScalar(s);
                 holder.add(model);
@@ -128,8 +137,38 @@ export default function HeroScene({
         };
         window.addEventListener("pointermove", onPointer, { passive: true });
 
+        // Visible half-height of the z=0 plane, in world units
+        const halfH = camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+        // Mobile resting pose, fitted to the slot between the header and the copy
+        const narrow = { y: 1.15, scale: 0.52 };
+        // Scroll end: the mark has travelled forward to this depth
+        const END_Z = 2.6;
+        const PAD_X = 28;
+        let endScale = 0.88;
+        const fitEnd = () => {
+            const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+            const sweep = Math.hypot(markW, markD);
+            const inset = Math.max(1 - (PAD_X * 2) / Math.max(width, 1), 0.5);
+            const fit = (dist: number) =>
+                Math.min((dist * tan * 2 * 0.9) / 2.2, (dist * tan * 2 * camera.aspect * inset) / sweep);
+            // Still turning on the way in, so allow for its full sweep; the near face sits closer to the camera
+            const dist = camera.position.z - END_Z;
+            endScale = fit(dist - (markD * fit(dist)) / 2);
+        };
+
         let width = 0;
         let height = 0;
+        const fitSlot = () => {
+            const el = slot?.current;
+            if (!el || !el.offsetHeight || !height) return;
+            const unit = (halfH * 2) / height;
+            const centre = el.offsetTop + el.offsetHeight / 2;
+            narrow.y = halfH - centre * unit;
+            // Turning on its y axis, the mark sweeps up to its diagonal width
+            const sweep = Math.hypot(markW, markD);
+            const fit = Math.min((el.offsetHeight * unit) / 2.2, (el.clientWidth * unit) / sweep) * 0.9;
+            narrow.scale = Math.min(Math.max(fit, 0.28), 0.8);
+        };
         const resize = () => {
             width = mount.clientWidth;
             height = mount.clientHeight;
@@ -138,10 +177,13 @@ export default function HeroScene({
             renderer.domElement.style.height = "100%";
             camera.aspect = width / Math.max(height, 1);
             camera.updateProjectionMatrix();
+            fitSlot();
+            fitEnd();
         };
         resize();
         const ro = new ResizeObserver(resize);
         ro.observe(mount);
+        if (slot?.current) ro.observe(slot.current);
 
         let visible = true;
         const io = new IntersectionObserver(([entry]) => {
@@ -169,13 +211,15 @@ export default function HeroScene({
 
             // Resting pose sits right of the headline on desktop, centred above it on mobile
             const restX = wide ? 1.62 : 0;
-            const restY = wide ? 0.28 : 1.15;
+            const restY = wide ? 0.28 : narrow.y;
             pivot.position.x = THREE.MathUtils.lerp(restX, 0, p);
             pivot.position.y = THREE.MathUtils.lerp(restY, 0, p) + idle * 0.6;
-            pivot.position.z = THREE.MathUtils.lerp(0, 2.6, p);
+            pivot.position.z = THREE.MathUtils.lerp(0, END_Z, p);
 
-            const baseScale = wide ? 0.88 : 0.52;
-            pivot.scale.setScalar(baseScale * (0.55 + 0.45 * ease(intro)));
+            const baseScale = wide ? 0.88 : narrow.scale;
+            // Grow as it comes forward so it fills the frame once the copy has gone
+            const scale = THREE.MathUtils.lerp(baseScale, endScale, p);
+            pivot.scale.setScalar(scale * (0.55 + 0.45 * ease(intro)));
 
             pivot.rotation.y =
                 -0.45 + (1 - intro) * -1.6 + pointer.x * 0.35 + p * (Math.PI * 2 + 0.45) + (reduce ? 0 : Math.sin(t * 0.35) * 0.12);
