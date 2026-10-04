@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import LocationPageTemplate from '../components/LocationPageTemplate'
 
 export const metadata: Metadata = {
-    title: 'Best Marketing Agency in Delhi | BRNDFY',
+    title: 'Best Marketing Agency in Delhi',
     description: 'Searching for the best marketing agency in Delhi? BRNDFY offers top-tier influencer marketing, campus branding, and youth activation services in Delhi NCR. Get a free audit today!',
     keywords: ['best marketing agency in Delhi', 'digital marketing agency in Delhi', 'SEO agency in Delhi', 'social media marketing agency Delhi'],
     alternates: {

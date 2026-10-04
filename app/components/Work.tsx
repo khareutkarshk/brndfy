@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -382,7 +381,18 @@ function CaseArticle({
 
 // ─── Section ─────────────────────────────────────────────────────────────────
 
-const Work = () => {
+/** The influencer half of /case-studies; `other` links across to the campus half */
+const Work = ({
+    id = "influencer-marketing",
+    index = "02",
+    label = "Influencer marketing",
+    other = { id: "college-activations", label: "College activations" },
+}: {
+    id?: string;
+    index?: string;
+    label?: string;
+    other?: { id: string; label: string };
+}) => {
     const root = useRef<HTMLElement>(null);
     const [active, setActive] = useState(0);
     const [playing, setPlaying] = useState<{ reel: Reel; brand: string } | null>(null);
@@ -407,10 +417,10 @@ const Work = () => {
     const current = INFLUENCER_CASES[active];
 
     return (
-        <section ref={root} id="work" className="relative px-4 py-20 sm:px-10 lg:px-16 lg:py-28">
+        <section ref={root} id={id} className="relative px-4 py-20 sm:px-10 lg:px-16 lg:py-28">
             <div data-recede className="mx-auto max-w-[1400px]">
                 <div className="max-w-[1100px]">
-                    <Eyebrow index="04" label="Selected work" />
+                    <Eyebrow index={index} label={label} />
                     <SplitReveal className="chapter-title max-w-[22ch]">
                         Six brands. Six briefs. <span className="font-semibold text-cobalt-hi">Creators that delivered.</span>
                     </SplitReveal>
@@ -461,10 +471,10 @@ const Work = () => {
                                 })}
                             </nav>
 
-                            <Link href="/case-studies" className="group inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-paper">
-                                Brand Activations
+                            <button onClick={() => scrollToTarget(other.id)} className="group inline-flex items-center gap-2 text-left text-sm text-mute transition-colors hover:text-paper">
+                                {other.label}
                                 <ArrowRight weight="bold" className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                            </Link>
+                            </button>
                         </div>
                     </aside>
 
@@ -472,10 +482,10 @@ const Work = () => {
                         {INFLUENCER_CASES.map((study, i) => (
                             <CaseArticle key={study.slug} study={study} index={i} total={INFLUENCER_CASES.length} onOpen={(reel, brand) => setPlaying({ reel, brand })} />
                         ))}
-                        <Link href="/case-studies" className="group mt-4 inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-paper lg:hidden">
-                            Brand Activations
+                        <button onClick={() => scrollToTarget(other.id)} className="group mt-4 inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-paper lg:hidden">
+                            {other.label}
                             <ArrowRight weight="bold" className="size-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>

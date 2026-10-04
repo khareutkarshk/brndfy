@@ -167,7 +167,7 @@ export default function ContactPage() {
                             {[
                                 { label: "Email", value: "vikash@brndfy.com", href: "mailto:vikash@brndfy.com" },
                                 { label: "Phone", value: "+91 96907 52035", href: "tel:+919690752035" },
-                                { label: "Office", value: "Knowledge Park II, Greater Noida, Uttar Pradesh" },
+                                { label: "Office", value: "J-27, Gama-II, Greater Noida 201308" },
                             ].map((row) => (
                                 <div key={row.label} className="grid grid-cols-[88px_1fr] items-baseline gap-4 py-5">
                                     <dt className="font-mono text-[11px] uppercase tracking-[0.18em] text-mute">{row.label}</dt>

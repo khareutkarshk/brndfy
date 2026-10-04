@@ -4,8 +4,8 @@ import Link from "next/link";
 const NAV = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/about" },
-    { name: "Work", href: "/#work" },
     { name: "Case studies", href: "/case-studies" },
+    { name: "Influencer marketing", href: "/influencer-marketing-agency" },
     { name: "Creators", href: "/#creators" },
     { name: "Services", href: "/#services" },
     { name: "Contact Us", href: "/contact" },
@@ -20,6 +20,7 @@ const SOCIAL = [
 const LOCATIONS = [
     { name: "Delhi", href: "/marketing-agency-delhi" },
     { name: "Delhi NCR", href: "/marketing-agency-ncr" },
+    { name: "Noida", href: "/marketing-agency-noida" },
     { name: "Greater Noida", href: "/marketing-agency-greater-noida" },
     { name: "India", href: "/marketing-agency-india" },
 ];

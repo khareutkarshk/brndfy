@@ -10,7 +10,7 @@ import Chapter from "./page/Chapter";
 // The article arrives as HTML from each city page; style its tags in place
 const ARTICLE = [
   "[&_article>p:first-of-type]:mt-0 [&_article>p:first-of-type]:font-display [&_article>p:first-of-type]:text-[clamp(1.3rem,2vw,1.7rem)] [&_article>p:first-of-type]:font-light [&_article>p:first-of-type]:leading-[1.35] [&_article>p:first-of-type]:text-paper",
-  "[&_p]:mt-5 [&_p]:text-lg [&_p]:leading-relaxed [&_p]:text-mute [&_strong]:font-medium [&_strong]:text-paper",
+  "[&_p]:mt-5 [&_p]:text-lg [&_p]:leading-relaxed [&_p]:text-mute [&_strong]:font-medium [&_strong]:text-paper [&_a]:text-paper [&_a]:underline [&_a]:decoration-primary [&_a]:underline-offset-4 hover:[&_a]:text-cobalt-hi",
   "[&_h2]:mt-16 [&_h2]:font-display [&_h2]:text-[clamp(1.6rem,2.6vw,2.3rem)] [&_h2]:font-medium [&_h2]:leading-[1.1] [&_h2]:tracking-[-0.03em] [&_h2]:text-paper",
   "[&_h3]:mt-10 [&_h3]:font-display [&_h3]:text-xl [&_h3]:font-medium [&_h3]:tracking-[-0.01em] [&_h3]:text-paper",
   "[&_ul]:mt-6 [&_ul]:grid [&_ul]:gap-3 sm:[&_ul]:grid-cols-2 [&_li]:rounded-[20px] [&_li]:border [&_li]:border-line [&_li]:bg-ink-2 [&_li]:px-5 [&_li]:py-4 [&_li]:leading-relaxed [&_li]:text-mute",
@@ -49,18 +49,15 @@ const LocationPageTemplate: React.FC<LocationPageTemplateProps> = ({
     "@id": `https://brndfy.com${canonical}`,
     url: `https://brndfy.com${canonical}`,
     telephone: "+91-9690752035",
+    // One real office; city pages describe where we work, not where we sit
     address: {
       "@type": "PostalAddress",
-      addressLocality: locationName,
-      addressRegion: "Delhi NCR",
+      streetAddress: "J-27, Gama-II",
+      addressLocality: "Greater Noida",
+      postalCode: "201308",
+      addressRegion: "Uttar Pradesh",
       addressCountry: "IN",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: 28.6139,
-      longitude: 77.209,
-    },
-    servesCrawl: true,
     areaServed: locationName,
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
@@ -96,7 +93,7 @@ const LocationPageTemplate: React.FC<LocationPageTemplateProps> = ({
         actions={
           <>
             <MagneticButton href="/contact">Get a free audit</MagneticButton>
-            <MagneticButton href="/#work" variant="ghost">
+            <MagneticButton href="/case-studies" variant="ghost">
               See our work
             </MagneticButton>
           </>

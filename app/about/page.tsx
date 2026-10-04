@@ -1,5 +1,4 @@
 import { Metadata } from 'next'
-import JsonLd from "@/app/components/JsonLd";
 import Image from 'next/image';
 import { ImpactStat } from '../data/caseStudies';
 import { ImpactGrid } from '../components/ImpactCard';
@@ -12,28 +11,14 @@ import Chapter from '../components/page/Chapter';
 import { CREATORS } from '../data/creators';
 
 export const metadata: Metadata = {
-    title: "About Us | BRNDFY - India's Youth Activation Engine",
+    title: "About Us: India's Youth Activation Engine",
     description: "Learn about BRNDFY's journey from college corridors to becoming India's leading youth marketing agency. Discover our vision, mission, and the impact we create for brands.",
     keywords: ["youth marketing agency", "influencer marketing experts India", "campus branding specialists", "BRNDFY story"],
     alternates: {
-        canonical: "https://brndfy.com/about",
+        canonical: "/about",
     },
 };
 
-const aggregateRatingSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Youth Marketing Services",
-    "provider": {
-        "@type": "Organization",
-        "name": "BRNDFY"
-    },
-    "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "124"
-    }
-};
 
 const STORY: { lead: string; mark?: string }[] = [
     { lead: "It began with a simple belief: brands shouldn't market to youth.", mark: "They should build with youth." },
@@ -135,7 +120,6 @@ function CreatorSheet() {
 export default function AboutPage() {
     return (
         <PageShell>
-            <JsonLd data={aggregateRatingSchema} />
 
             <PageHero
                 label="About Brndfy"

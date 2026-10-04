@@ -114,7 +114,7 @@ import JsonLd from "./components/JsonLd";
 export const metadata: Metadata = {
   metadataBase: new URL("https://brndfy.com"),
   title: {
-    default: "Building Culture. Not Just Campaigns.",
+    default: "BRNDFY | Influencer Marketing & Youth Marketing Agency in India",
     template: "%s | BRNDFY",
   },
   description:
@@ -172,21 +172,29 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: "https://brndfy.com",
-  },
 };
 
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "BRNDFY",
+  alternateName: "Brndfy",
   url: "https://brndfy.com",
+  description:
+    "Influencer marketing, campus branding and youth activation agency based in Greater Noida, serving Delhi NCR and brands across India.",
+  email: "business@brndfy.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "J-27, Gama-II",
+    addressLocality: "Greater Noida",
+    postalCode: "201308",
+    addressRegion: "Uttar Pradesh",
+    addressCountry: "IN",
+  },
   logo: "https://brndfy.com/brndfy_logo.png",
   sameAs: [
-    "https://www.instagram.com/brndfy",
-    "https://www.linkedin.com/company/brndfy",
-    "https://twitter.com/brndfy",
+    "https://www.instagram.com/brndfymedia/",
+    "https://www.linkedin.com/company/marketmafiaa/",
   ],
   contactPoint: {
     "@type": "ContactPoint",

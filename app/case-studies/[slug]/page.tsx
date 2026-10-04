@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +17,19 @@ interface PageProps {
 
 export async function generateStaticParams() {
     return CASE_STUDIES.map((study) => ({ slug: study.slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const study = CASE_STUDIES.find((s) => s.slug === slug);
+    if (!study) return {};
+    const lead = study.impact.stats[0];
+    return {
+        title: `${study.brandName} Case Study: ${study.title}`,
+        description: `${study.campaignType.join(", ")} for ${study.brandName}. ${lead.value} ${lead.label.toLowerCase()}. ${study.challenge}`.slice(0, 300),
+        alternates: { canonical: `/case-studies/${study.slug}` },
+        openGraph: { images: [{ url: study.thumbnail.src, alt: `${study.brandName} campaign by BRNDFY` }] },
+    };
 }
 
 /** The closing statement's last sentence is the line we want remembered */

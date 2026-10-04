@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
@@ -6,32 +7,47 @@ import PageShell from "@/app/components/page/PageShell";
 import PageHero from "@/app/components/page/PageHero";
 import Chapter from "@/app/components/page/Chapter";
 import FinalCTA from "@/app/components/FinalCTA";
+import Work from "@/app/components/Work";
+import { INFLUENCER_CASES } from "@/app/data/influencerWork";
 
-export const metadata = {
-    title: "Case Studies — Brndfy",
-    description: "Explore how Brndfy has activated youth culture for India's top brands.",
+export const metadata: Metadata = {
+    title: "Case Studies: Influencer Marketing & College Activations",
+    description:
+        "Influencer marketing campaigns for INDmoney, slice, Vyapar and AbhiBus, and college activations for Monster Energy, Nescafe and Drishti IAS. The briefs, the creators and the numbers.",
+    alternates: { canonical: "/case-studies" },
 };
 
 export default function CaseStudiesPage() {
     return (
         <PageShell>
             <PageHero
-                label="Campus campaigns"
+                label="Case studies"
                 title={
                     <>
                         Campaigns that <span className="font-semibold">move culture.</span>
                     </>
                 }
-                intro="Sampling drives, campus activations and student-led buzz for brands that wanted to be part of youth culture, not just seen by it."
+                intro="Two halves of the same job: creator campaigns that turn views into leads, and college activations that put brands in students' hands."
                 meta={[
-                    { label: "Campaigns", value: String(CASE_STUDIES.length) },
-                    { label: "Focus", value: "Youth activation" },
-                    { label: "Where", value: "Campuses across India" },
-                    { label: "Also", value: "Influencer strategy" },
+                    { label: "Influencer campaigns", value: String(INFLUENCER_CASES.length) },
+                    { label: "College activations", value: String(CASE_STUDIES.length) },
+                    { label: "Focus", value: "Youth & Gen Z" },
+                    { label: "Where", value: "Across India" },
                 ]}
             />
 
-            <Chapter index="02" label="All case studies">
+            <Work other={{ id: "college-activations", label: "College activations" }} />
+
+            <Chapter
+                id="college-activations"
+                index="03"
+                label="College activations"
+                title={
+                    <>
+                        Campaigns that <span className="font-semibold">students showed up for.</span>
+                    </>
+                }
+            >
                 {/* Bento: the first campaign leads at double size, the rest fill around it */}
                 <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {CASE_STUDIES.map((study, i) => {
@@ -88,10 +104,6 @@ export default function CaseStudiesPage() {
                     })}
                 </ul>
 
-                <Link href="/#work" className="group mt-10 inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-paper">
-                    See our creator campaigns
-                    <ArrowUpRight weight="bold" className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </Link>
             </Chapter>
 
             <FinalCTA />

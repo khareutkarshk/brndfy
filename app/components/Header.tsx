@@ -16,7 +16,6 @@ gsap.registerPlugin(ScrollTrigger);
 /** Pages are routes; home chapters are /#hash so they work from any page */
 const NAV = [
     { name: "About", href: "/about" },
-    { name: "Work", href: "/#work" },
     { name: "Case studies", href: "/case-studies" },
     { name: "Creators", href: "/#creators" },
     { name: "Services", href: "/#services" },

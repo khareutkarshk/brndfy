@@ -168,10 +168,15 @@ const Creators = () => {
     }, []);
 
     return (
-        <section id="creators" data-tone="deep" className="relative overflow-hidden">
+        <section id="creators" className="relative overflow-hidden">
             {/* Desktop: pinned ring */}
             <div ref={root as React.Ref<HTMLDivElement>} className="relative hidden h-[100dvh] min-h-[720px] flex-col lg:flex">
-                <div className="pointer-events-none absolute left-1/2 top-[48%] h-[60%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-[100%] bg-primary/20 blur-[120px]" />
+                {/* Stage lighting: a cool spotlight from above, a dot grid that fades out from the ring, darker edges */}
+                <div aria-hidden className="pointer-events-none absolute inset-0">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_32%_75%_at_50%_0%,rgba(176,215,249,0.13),transparent_70%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(rgba(176,215,249,0.16)_1px,transparent_1px)] bg-size-[28px_28px] mask-[radial-gradient(ellipse_45%_40%_at_50%_62%,black,transparent)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_70%_at_50%_55%,transparent_45%,rgba(5,6,26,0.75))]" />
+                </div>
 
                 <div className="relative z-10 mx-auto w-full max-w-[1400px] px-16 pt-24">
                     <Eyebrow index="05" label="The creators" />
@@ -181,7 +186,14 @@ const Creators = () => {
                 </div>
 
                 <div data-ring-stage className="relative flex-1 cursor-grab touch-pan-y select-none" style={{ perspective: "1700px" }}>
-                    <div ref={ring} className="absolute left-1/2 top-[44%] h-0 w-0" style={{ transformStyle: "preserve-3d", transform: "translateZ(-560px)" }}>
+                    {/* The ring's floor: radius 560 seen at perspective 1700 projects to roughly 840 x 56 just under the cards */}
+                    <div aria-hidden className="pointer-events-none absolute left-1/2 top-[40%]">
+                        <div className="absolute left-0 top-[78px] h-[90px] w-[420px] -translate-x-1/2 rounded-[100%] bg-primary/40 blur-[50px]" />
+                        <div className="absolute left-0 top-[84px] h-[60px] w-[860px] -translate-x-1/2 rounded-[100%] border border-accent/15" />
+                        <div className="absolute left-0 top-[139px] h-px w-[260px] -translate-x-1/2 bg-linear-to-r from-transparent via-accent/60 to-transparent" />
+                    </div>
+
+                    <div ref={ring} className="absolute left-1/2 top-[40%] h-0 w-0" style={{ transformStyle: "preserve-3d", transform: "translateZ(-560px)" }}>
                         {CREATORS.map((c, i) => (
                             <div
                                 key={c.name}
@@ -190,12 +202,12 @@ const Creators = () => {
                                 style={{ transform: `rotateY(${i * STEP}deg) translateZ(560px)`, backfaceVisibility: "hidden" }}
                             >
                                 <Image src={c.photo} alt={c.name} fill sizes="210px" className="pointer-events-none object-cover" draggable={false} />
-                                <div data-shade className="absolute inset-0 bg-secondary" style={{ opacity: 0.85 }} />
+                                <div data-shade className="absolute inset-0 bg-ink" style={{ opacity: 0.85 }} />
                             </div>
                         ))}
                     </div>
 
-                    <div className="absolute inset-x-0 bottom-10 z-10 flex flex-col items-center">
+                    <div className="absolute inset-x-0 bottom-8 z-10 flex flex-col items-center">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={active}
