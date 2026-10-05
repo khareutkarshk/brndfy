@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
@@ -28,8 +26,19 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        const apiKey = process.env.RESEND_API_KEY;
+        const fromEmail = process.env.RESEND_FROM_EMAIL;
+        if (!apiKey || !fromEmail) {
+            console.error("[Contact route config error] RESEND_API_KEY and RESEND_FROM_EMAIL must be configured.");
+            return NextResponse.json(
+                { error: "Contact form is temporarily unavailable. Please email us directly." },
+                { status: 503 }
+            );
+        }
+
+        const resend = new Resend(apiKey);
         const { error } = await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL as string,
+            from: fromEmail,
             to: "vikash@brndfy.com",
             replyTo: email,
             subject: `New Contact Form Submission from ${name}`,
