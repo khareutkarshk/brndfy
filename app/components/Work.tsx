@@ -41,7 +41,7 @@ function ReelTile({ reel, index, onOpen }: { reel: Reel; index: number; onOpen: 
     const live = Boolean(reel.url);
     const platform = live ? platformOf(reel.url) : "youtube";
     const vertical = live ? isVertical(reel.url) : false;
-    const thumb = live && platform === "youtube" ? youtubeThumb(reel.url) : null;
+    const thumb = reel.thumb ?? (live && platform === "youtube" ? youtubeThumb(reel.url) : null);
     const portrait = CREATOR_PHOTOS[reel.creator];
     const PlatformIcon = platform === "youtube" ? YoutubeLogo : InstagramLogo;
 
@@ -57,7 +57,7 @@ function ReelTile({ reel, index, onOpen }: { reel: Reel; index: number; onOpen: 
                 } ${live ? "cursor-pointer" : "cursor-not-allowed border border-dashed border-paper/20"}`}
             >
                 {thumb ? (
-                    <Image src={thumb} alt="" fill sizes="280px" className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105" />
+                    <Image src={thumb} alt="" fill sizes={vertical ? "170px" : "280px"} className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105" />
                 ) : portrait ? (
                     <Image src={portrait} alt="" fill sizes="170px" className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105" />
                 ) : live ? (
