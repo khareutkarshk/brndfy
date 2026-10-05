@@ -21,6 +21,7 @@ import {
     type InfluencerCase,
     type Reel,
 } from "@/app/data/influencerWork";
+import { div } from "three/src/nodes/tsl/TSLBase.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,7 +41,7 @@ function ReelTile({ reel, index, onOpen }: { reel: Reel; index: number; onOpen: 
     const live = Boolean(reel.url);
     const platform = live ? platformOf(reel.url) : "youtube";
     const vertical = live ? isVertical(reel.url) : false;
-    const thumb = live && platform === "youtube" ? youtubeThumb(reel.url) : null;
+    const thumb = reel.thumb ?? (live && platform === "youtube" ? youtubeThumb(reel.url) : null);
     const portrait = CREATOR_PHOTOS[reel.creator];
     const PlatformIcon = platform === "youtube" ? YoutubeLogo : InstagramLogo;
 
@@ -56,7 +57,7 @@ function ReelTile({ reel, index, onOpen }: { reel: Reel; index: number; onOpen: 
                 } ${live ? "cursor-pointer" : "cursor-not-allowed border border-dashed border-paper/20"}`}
             >
                 {thumb ? (
-                    <Image src={thumb} alt="" fill sizes="280px" className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105" />
+                    <Image src={thumb} alt="" fill sizes={vertical ? "170px" : "280px"} className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105" />
                 ) : portrait ? (
                     <Image src={portrait} alt="" fill sizes="170px" className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-105" />
                 ) : live ? (
@@ -226,6 +227,7 @@ function CaseArticle({
 }) {
     const reduce = useReducedMotion();
     // Every case leads with creators and total views; the rest are outcomes
+    const liveReels = study.reels.filter((r) => r.url).length;
     const [creators, ...restStats] = study.stats;
     const views = restStats.find((s) => /views/i.test(s.label));
     const outcomes = restStats.filter((s) => s !== views);
@@ -293,7 +295,7 @@ function CaseArticle({
                         <div className="flex items-center gap-4 xl:flex-row-reverse">
                             <CreatorStack reels={study.reels} />
                             <div>
-                                <p className="font-display text-2xl font-semibold leading-none tracking-[-0.03em] text-paper">{creators.value}</p>
+                                <p className="font-display text-[clamp(2rem,2.5vw,3rem)] font-semibold leading-none tracking-[-0.03em] text-paper">{creators.value}</p>
                                 <p className="mt-1 text-xs text-mute">{creators.label}</p>
                             </div>
                         </div>
@@ -342,42 +344,48 @@ function CaseArticle({
                 </div>
             )}
 
-            <div className="mt-14">
-                <div className="flex items-center justify-between gap-4">
-                    <div>
-                        <p className="font-display text-sm font-medium text-paper">Work highlights</p>
-                        <p className="mt-1 text-xs text-mute">{study.reels.filter((r) => r.url).length} videos, tap to play</p>
-                    </div>
-                    <div className="hidden gap-2 sm:flex">
-                        <button onClick={() => nudge(-1)} aria-label="Scroll videos left" className="grid size-10 place-items-center rounded-full border border-paper/20 text-paper transition-colors hover:border-paper/60 active:scale-95">
-                            <ArrowLeft weight="bold" className="size-4" />
-                        </button>
-                        <button onClick={() => nudge(1)} aria-label="Scroll videos right" className="grid size-10 place-items-center rounded-full border border-paper/20 text-paper transition-colors hover:border-paper/60 active:scale-95">
-                            <ArrowRight weight="bold" className="size-4" />
-                        </button>
-                    </div>
-                </div>
-                <div
-                    ref={rail}
-                    className="no-scrollbar -mx-4 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:px-0 lg:mask-[linear-gradient(to_right,black_88%,transparent)]"
-                >
-                    {groups.map((g, gi) => (
-                        <div key={gi} className="flex shrink-0 gap-3">
-                            {g.label && (
-                                <div className="flex w-8 shrink-0 items-start justify-center pt-2">
-                                    <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent [writing-mode:vertical-rl]">{g.label}</span>
-                                </div>
-                            )}
-                            {g.reels.map((r, i) => (
-                                <ReelTile key={`${r.creator}-${i}`} reel={r} index={gi * 5 + i} onOpen={(reel) => onOpen(reel, study.brand)} />
-                            ))}
+            {liveReels > 0 && (
+                <div className="mt-14">
+                    <div className="flex items-center justify-between gap-4">
+                        <div>
+                            <p className="font-display text-sm font-medium text-paper">Work highlights</p>
+                            <p className="mt-1 text-xs text-mute">
+                                {liveReels} {liveReels === 1 ? "video" : "videos"}, tap to play
+                            </p>
                         </div>
-                    ))}
+                        <div className="hidden gap-2 sm:flex">
+                            <button onClick={() => nudge(-1)} aria-label="Scroll videos left" className="grid size-10 place-items-center rounded-full border border-paper/20 text-paper transition-colors hover:border-paper/60 active:scale-95">
+                                <ArrowLeft weight="bold" className="size-4" />
+                            </button>
+                            <button onClick={() => nudge(1)} aria-label="Scroll videos right" className="grid size-10 place-items-center rounded-full border border-paper/20 text-paper transition-colors hover:border-paper/60 active:scale-95">
+                                <ArrowRight weight="bold" className="size-4" />
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        ref={rail}
+                        className="no-scrollbar -mx-4 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:px-0 lg:mask-[linear-gradient(to_right,black_88%,transparent)]"
+                    >
+                        {groups.map((g, gi) => (
+                            <div key={gi} className="flex shrink-0 gap-3">
+                                {g.label && (
+                                    <div className="flex w-8 shrink-0 items-start justify-center pt-2">
+                                        <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent [writing-mode:vertical-rl]">{g.label}</span>
+                                    </div>
+                                )}
+                                {g.reels.map((r, i) => (
+                                    <ReelTile key={`${r.creator}-${i}`} reel={r} index={gi * 5 + i} onOpen={(reel) => onOpen(reel, study.brand)} />
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </article>
     );
 }
+
+
 
 // ─── Section ─────────────────────────────────────────────────────────────────
 

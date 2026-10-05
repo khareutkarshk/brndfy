@@ -133,6 +133,8 @@ const Creators = () => {
             let startDrag = 0;
             const stage = el.querySelector<HTMLElement>("[data-ring-stage]")!;
             const onDown = (e: PointerEvent) => {
+                const target = e.target as HTMLElement;
+                if (target.closest("a, button")) return;
                 down = true;
                 startX = e.clientX;
                 startDrag = rot.drag;

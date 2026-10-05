@@ -29,8 +29,8 @@ export default function Home() {
       <Numbers />
       <WorkTeaser />
       <Creators />
-      <Services />
       <Clients />
+      <Services />
       <Testimonials />
       <FAQ />
       <FinalCTA />
