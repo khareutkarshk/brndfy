@@ -39,10 +39,10 @@ const Numbers = () => {
                         <div className="relative z-10">
                             <Odometer value="300+" className="font-display text-[clamp(4.5rem,10vw,9.5rem)] font-semibold tracking-[-0.05em] text-white" />
                             <p className="mt-4 max-w-[28ch] text-base text-white/85 sm:text-lg">
-                                Creators in our network across finance, edutainment, lifestyle and more.
+                                Creators in our network across Finance, Edutainment, Lifestyle and more.
                             </p>
                         </div>
-                        <div className="relative z-10 mt-10 grid grid-cols-7 gap-2">
+                        <div className="relative z-10 mt-10 grid grid-cols-5 gap-5">
                             {CREATORS.map((c, i) => (
                                 <div
                                     key={c.name}
@@ -82,7 +82,7 @@ const Numbers = () => {
                         </div>
                         <div>
                             <Odometer value="15+" className="font-display text-6xl font-semibold tracking-[-0.04em] text-paper" />
-                            <p className="mt-3 text-mute">Brand campaigns delivered.</p>
+                            <p className="mt-3 text-mute">Brand Campaigns delivered.</p>
                         </div>
                     </motion.div>
 
@@ -93,7 +93,7 @@ const Numbers = () => {
                     >
                         <div className="pointer-events-none absolute -right-10 -top-10 size-48 rounded-full border-[28px] border-primary/40" />
                         <Odometer value="3+" className="relative font-display text-6xl font-semibold tracking-[-0.04em] text-paper" />
-                        <p className="relative mt-3 text-mute">Years across influencer marketing and talent management.</p>
+                        <p className="relative mt-3 text-mute">Years across Influencer Marketing and Talent Management.</p>
                     </motion.div>
                 </div>
             </div>

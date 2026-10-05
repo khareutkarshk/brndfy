@@ -61,8 +61,8 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
     whatWeDid:
       "A mega creator campaign across five niches (infotainment, gaming, edutainment, vlogging and finance) while deliberately limiting finance creators. A high-risk call that became the strategy behind four consecutive months of INDmoney campaigns.",
     stats: [
-      { value: "20+", label: "Creators activated" },
-      { value: "4.5M+", label: "Total views" },
+      { value: "30+", label: "Creators activated" },
+      { value: "17.5M+", label: "Total views" },
       { value: "5+", label: "Niches tapped" },
     ],
     reels: [
@@ -84,8 +84,8 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
     whatWeDid:
       "We handpicked Gen Z-loved creators across lifestyle, couples, finance and relatable content, reaching young audiences with the intent and spending power to turn slice into an everyday money conversation.",
     stats: [
-      { value: "5", label: "Micro creators" },
-      { value: "600K+", label: "Total views" },
+      { value: "20+", label: "Micro creators" },
+      { value: "7M+", label: "Total views" },
       { value: "5.65%", label: "Engagement rate" },
     ],
     reels: [
@@ -144,7 +144,6 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
       { value: "20", label: "Macro & Mega creators" },
       { value: "5M+", label: "Total views" },
       { value: "4.5%", label: "Engagement rate" },
-      { value: "16,200+", label: "Leads generated" },
     ],
     reels: [
     ],
@@ -165,7 +164,6 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
       { value: "8", label: "Micro creators" },
       { value: "650K+", label: "Total views" },
       { value: "5.2%", label: "Engagement rate" },
-      { value: "2,600+", label: "Leads generated" },
     ],
     reels: [
     ],

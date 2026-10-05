@@ -165,7 +165,7 @@ const SERVICES = [
 ];
 
 /**
- * Chapter six. A real sticky stack: each service pins at the top and is
+ * Chapter seven. A real sticky stack: each service pins at the top and is
  * pushed back as the next one slides over it.
  */
 const Services = () => {
@@ -191,7 +191,7 @@ const Services = () => {
     return (
         <section ref={root} id="services" className="relative px-4 pt-20 sm:px-10 lg:px-16 lg:pt-28">
             <div data-recede className="mx-auto max-w-[1400px]">
-                <Eyebrow index="06" label="What we do" />
+                <Eyebrow index="07" label="What we do" />
                 <SplitReveal className="chapter-title max-w-[18ch]">
                     From discovery <span className="font-semibold">to delivery.</span>
                 </SplitReveal>

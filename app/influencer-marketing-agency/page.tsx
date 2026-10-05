@@ -135,7 +135,7 @@ export default function InfluencerMarketingPage() {
                     </>
                 }
                 titleClassName="max-w-[18ch] text-[clamp(2.4rem,5.4vw,5rem)]"
-                intro="We match finance, ed-tech and Gen Z brands with the right creators, from regional nano to mega, then measure what the content actually moves."
+                intro="Finance and Edutainment brands need trust before clicks. We match them with the right creators, then measure what that trust turns into."
                 actions={
                     <>
                         <MagneticButton href="/contact">Start a campaign</MagneticButton>
@@ -144,12 +144,6 @@ export default function InfluencerMarketingPage() {
                         </MagneticButton>
                     </>
                 }
-                meta={[
-                    { label: "Creators activated", value: `${CREATOR_TOTAL}+` },
-                    { label: "Total views", value: `${VIEWS_TOTAL}M+` },
-                    { label: "Leads generated", value: `${LEADS_TOTAL}K+` },
-                    { label: "Based in", value: "Delhi NCR" },
-                ]}
             />
 
             <Chapter
@@ -181,7 +175,7 @@ export default function InfluencerMarketingPage() {
                 label="Results"
                 title={
                     <>
-                        {INFLUENCER_CASES.length} influencer campaigns, <span className="font-semibold">on the record.</span>
+                        {INFLUENCER_CASES.length} Influencer Campaigns, <span className="font-semibold">on the record.</span>
                     </>
                 }
             >

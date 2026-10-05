@@ -109,7 +109,7 @@ function BrandMark({ brand, index }: { brand: Brand; index: number }) {
 }
 
 /**
- * Chapter seven. Every client gets its own Brndfy mark: twenty marks, all
+ * Chapter six. Every client gets its own Brndfy mark: twenty marks, all
  * visible at once. Phones swipe two rows sideways; wider screens see the grid.
  */
 const Clients = () => (
@@ -117,7 +117,7 @@ const Clients = () => (
         <div data-recede className="mx-auto max-w-[1400px] px-4 sm:px-10 lg:px-16">
             <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
                 <div>
-                    <Eyebrow index="07" label="Clients" />
+                    <Eyebrow index="06" label="Clients" />
                     <SplitReveal className="chapter-title max-w-[16ch]">
                     Brands we have <span className="font-semibold">built with.</span>
                     </SplitReveal>
