@@ -141,9 +141,9 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
     whatWeDid:
       "No tags, no collab posts and not a single mention of Polaris. Curiosity-led content that felt completely organic turned creator videos into high-engagement conversations and a flood of PSAT leads.",
     stats: [
-      { value: "20", label: "Macro & Mega creators" },
-      { value: "5M+", label: "Total views" },
-      { value: "4.5%", label: "Engagement rate" },
+      { value: "40+", label: "Macro & Mega creators" },
+      { value: "18M+", label: "Total views" },
+      { value: "6.2%", label: "Engagement rate" },
     ],
     reels: [
     ],
@@ -161,8 +161,8 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
     whatWeDid:
       "We put Newton's proof points up front: GSoC selections, ICPC results, internships and student achievements. Data-driven creator content made the proposition credible and relatable.",
     stats: [
-      { value: "8", label: "Micro creators" },
-      { value: "650K+", label: "Total views" },
+      { value: "20+", label: "Micro creators" },
+      { value: "6.5M+", label: "Total views" },
       { value: "5.2%", label: "Engagement rate" },
     ],
     reels: [

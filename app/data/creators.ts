@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
 
 import SahilRana from "@/assets/Creators Image/Sahil Rana.jpg";
-import Prerna from "@/assets/Creators Image/Prerna.jpg";
+import PrernaDas from "@/assets/Creators Image/Prerna.jpg";
 import LoveBabbar from "@/assets/Creators Image/Love Babbar.jpg";
 import SmitThakkar from "@/assets/Creators Image/Smit Thakkar.jpg";
 import ArpitSharma from "@/assets/Creators Image/Arpit Sharma.jpg";
@@ -25,7 +25,7 @@ export interface Creator {
 /** Order follows influencer-creators.txt */
 export const CREATORS: Creator[] = [
   { name: "Sahil Rana", handle: "sahilrana", instagram: "https://www.instagram.com/sahilrana/", photo: SahilRana, ig: "3.5M+", yt: "20M+", niches: ["Gaming", "Tech"] },
-  { name: "Prerana", handle: "i.preranadas", instagram: "https://www.instagram.com/i.preranadas/", photo: Prerna, ig: "900K+", niches: ["Actor", "Storyteller"] },
+  { name: "Prerana Das", handle: "i.preranadas", instagram: "https://www.instagram.com/i.preranadas/", photo: PrernaDas, ig: "900K+", niches: ["Actor", "Storyteller"] },
   { name: "Love Babbar", handle: "lovebabbar1", instagram: "https://www.instagram.com/lovebabbar1/", photo: LoveBabbar, ig: "151K+", yt: "650K+", niches: ["Edutainment"] },
   { name: "Smit Thakkar", handle: "iam_smitthakkar", instagram: "https://www.instagram.com/iam_smitthakkar/", photo: SmitThakkar, ig: "700K+", niches: ["Finance", "Investing"] },
   { name: "Arpit Sharma", handle: "arpitsharmaiii", instagram: "https://www.instagram.com/arpitsharmaiii/", photo: ArpitSharma, ig: "650K+", yt: "100K+", niches: ["Finance", "Fitness"] },
