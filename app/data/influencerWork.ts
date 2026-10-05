@@ -19,20 +19,20 @@ import LakshayThumb from "@/assets/Thumbnails/Lakshay Sharma.jpg";
 import RohanThumb from "@/assets/Thumbnails/Rohan Mehta.jpg";
 import ShadabThumb from "@/assets/Thumbnails/Mohd. Shadab.jpg";
 
-import BathBabesPortrait from "@/assets/creator portraits/Bath Babes.jpg";
-import LakshayPortrait from "@/assets/creator portraits/Lakshay Sharma.jpg";
-import MoneyMentorsPortrait from "@/assets/creator portraits/Money Mentors.jpg";
-import ShadabPortrait from "@/assets/creator portraits/Mohd. Shadab.jpg";
-import VanshikaPortrait from "@/assets/creator portraits/Vanshika.jpg";
-import RohanPortrait from "@/assets/creator portraits/Rohan Mehta.jpg";
-import MarketFeedPortrait from "@/assets/creator portraits/MarketFeed.jpg";
-import SahilPortrait from "@/assets/creator portraits/Sahil Rana.jpg";
-import LovePortrait from "@/assets/creator portraits/Love Babbar.jpg";
-import RajdharmaPortrait from "@/assets/creator portraits/Archana Tiwari.jpg";
-import SmitPortrait from "@/assets/creator portraits/Smit Thakkar.jpg";
-import RuchikaPortrait from "@/assets/creator portraits/Ruchika Gupta.jpg";
-import GaganPortrait from "@/assets/creator portraits/Gagan Saini.jpg";
-import ApoorvPortrait from "@/assets/creator portraits/Apoorv Saxena.jpg";
+import BathBabesPortrait from "@/assets/Creator portraits/Bath Babes.jpg";
+import LakshayPortrait from "@/assets/Creator portraits/Lakshay Sharma.jpg";
+import MoneyMentorsPortrait from "@/assets/Creator portraits/Money Mentors.jpg";
+import ShadabPortrait from "@/assets/Creator portraits/Mohd. Shadab.jpg";
+import VanshikaPortrait from "@/assets/Creator portraits/Vanshika.jpg";
+import RohanPortrait from "@/assets/Creator portraits/Rohan Mehta.jpg";
+import MarketFeedPortrait from "@/assets/Creator portraits/MarketFeed.jpg";
+import SahilPortrait from "@/assets/Creator portraits/Sahil Rana.jpg";
+import LovePortrait from "@/assets/Creator portraits/Love Babbar.jpg";
+import RajdharmaPortrait from "@/assets/Creator portraits/Archana Tiwari.jpg";
+import SmitPortrait from "@/assets/Creator portraits/Smit Thakkar.jpg";
+import RuchikaPortrait from "@/assets/Creator portraits/Ruchika Gupta.jpg";
+import GaganPortrait from "@/assets/Creator portraits/Gagan Saini.jpg";
+import ApoorvPortrait from "@/assets/Creator portraits/Apoorv Saxena.jpg";
 
 
 
