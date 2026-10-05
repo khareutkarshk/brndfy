@@ -97,7 +97,7 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
       { value: "5+", label: "Niches tapped" },
     ],
     reels: [
-      { creator: "Sahil Rana", profile: "https://www.youtube.com/@SahilXp2", url: "https://www.youtube.com/watch?v=VJav2ydDnzA", portrait: SahilPortrait, portrait: SahilPortrait},
+      { creator: "Sahil Rana", profile: "https://www.youtube.com/@SahilXp2", url: "https://www.youtube.com/watch?v=VJav2ydDnzA", portrait: SahilPortrait},
       { creator: "Rajdharma", profile: "https://www.youtube.com/@TheRajdharma", url: "https://youtu.be/hFhZ_SCsfMw", portrait: RajdharmaPortrait},
       { creator: "Love Babbar", profile: "https://www.youtube.com/@LoveBabbar", url: "https://youtu.be/SkOBlVrjGW8", portrait: LovePortrait},
       { creator: "Marketfeed", profile: "https://www.youtube.com/@marketfeedapp", url: "https://youtu.be/42b6uK_UUFU", portrait: MarketFeedPortrait }    ],
