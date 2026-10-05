@@ -19,6 +19,23 @@ import LakshayThumb from "@/assets/Thumbnails/Lakshay Sharma.jpg";
 import RohanThumb from "@/assets/Thumbnails/Rohan Mehta.jpg";
 import ShadabThumb from "@/assets/Thumbnails/Mohd. Shadab.jpg";
 
+import BathBabesPortrait from "@/assets/creator portraits/Bath Babes.jpg";
+import LakshayPortrait from "@/assets/creator portraits/Lakshay Sharma.jpg";
+import MoneyMentorsPortrait from "@/assets/creator portraits/Money Mentors.jpg";
+import ShadabPortrait from "@/assets/creator portraits/Mohd. Shadab.jpg";
+import VanshikaPortrait from "@/assets/creator portraits/Vanshika.jpg";
+import RohanPortrait from "@/assets/creator portraits/Rohan Mehta.jpg";
+import MarketFeedPortrait from "@/assets/creator portraits/MarketFeed.jpg";
+import SahilPortrait from "@/assets/creator portraits/Sahil Rana.jpg";
+import LovePortrait from "@/assets/creator portraits/Love Babbar.jpg";
+import RajdharmaPortrait from "@/assets/creator portraits/Archana Tiwari.jpg";
+import SmitPortrait from "@/assets/creator portraits/Smit Thakkar.jpg";
+import RuchikaPortrait from "@/assets/creator portraits/Ruchika Gupta.jpg";
+import GaganPortrait from "@/assets/creator portraits/Gagan Saini.jpg";
+import ApoorvPortrait from "@/assets/creator portraits/Apoorv Saxena.jpg";
+
+
+
 export type Platform = "youtube" | "instagram";
 
 export interface Reel {
@@ -27,7 +44,7 @@ export interface Reel {
   /** Empty when the video is not live yet */
   url: string;
   views?: string;
-  group?: string;
+  portrait?: StaticImageData;
   /** Cover image; YouTube reels fall back to the video thumbnail */
   thumb?: StaticImageData;
 }
@@ -80,10 +97,10 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
       { value: "5+", label: "Niches tapped" },
     ],
     reels: [
-      { creator: "Sahil Rana", profile: "https://www.youtube.com/@SahilXp2", url: "https://www.youtube.com/watch?v=VJav2ydDnzA" },
-      { creator: "Rajdharma", profile: "https://www.youtube.com/@TheRajdharma", url: "https://youtu.be/hFhZ_SCsfMw" },
-      { creator: "Love Babbar", profile: "https://www.youtube.com/@LoveBabbar", url: "https://youtu.be/SkOBlVrjGW8" },
-      { creator: "Marketfeed", profile: "https://www.youtube.com/@marketfeedapp", url: "https://youtu.be/42b6uK_UUFU" }    ],
+      { creator: "Sahil Rana", profile: "https://www.youtube.com/@SahilXp2", url: "https://www.youtube.com/watch?v=VJav2ydDnzA", portrait: SahilPortrait, portrait: SahilPortrait},
+      { creator: "Rajdharma", profile: "https://www.youtube.com/@TheRajdharma", url: "https://youtu.be/hFhZ_SCsfMw", portrait: RajdharmaPortrait},
+      { creator: "Love Babbar", profile: "https://www.youtube.com/@LoveBabbar", url: "https://youtu.be/SkOBlVrjGW8", portrait: LovePortrait},
+      { creator: "Marketfeed", profile: "https://www.youtube.com/@marketfeedapp", url: "https://youtu.be/42b6uK_UUFU", portrait: MarketFeedPortrait }    ],
   },
   {
     slug: "slice",
@@ -103,10 +120,10 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
       { value: "5.65%", label: "Engagement rate" },
     ],
     reels: [
-      { creator: "Ruchika Gupta", views: "61K+", profile: "https://www.instagram.com/ruchika.gupta___", url: "https://www.instagram.com/reel/DcGKQkfSYjw/", thumb: RuchikaThumb },
-      { creator: "Smit Thakkar", views: "10K+", profile: "https://www.instagram.com/financebysmit", url: "https://www.instagram.com/reel/DcOY2bBhlPM/", thumb: SmitThumb },
-      { creator: "Apoorv Saxena", views: "30K+", profile: "https://www.instagram.com/cutieepotatoes", url: "https://www.instagram.com/reel/DclhyIRygtd/", thumb: ApoorvThumb },
-      { creator: "Gagan Saini", views: "50K+", profile: "https://www.instagram.com/03gagan", url: "https://www.instagram.com/p/Dd1cIWKhiTh/", thumb: GaganThumb },
+      { creator: "Ruchika Gupta", profile: "https://www.instagram.com/ruchika.gupta___", url: "https://www.instagram.com/reel/DcGKQkfSYjw/", portrait: RuchikaPortrait, thumb: RuchikaThumb },
+      { creator: "Smit Thakkar", profile: "https://www.instagram.com/financebysmit", url: "https://www.instagram.com/reel/DcOY2bBhlPM/", portrait: SmitPortrait, thumb: SmitThumb },
+      { creator: "Apoorv Saxena", profile: "https://www.instagram.com/cutieepotatoes", url: "https://www.instagram.com/reel/DclhyIRygtd/", portrait: ApoorvPortrait, thumb: ApoorvThumb },
+      { creator: "Gagan Saini", profile: "https://www.instagram.com/03gagan", url: "https://www.instagram.com/p/Dd1cIWKhiTh/", portrait: GaganPortrait, thumb: GaganThumb },
     ],
   },
   {
@@ -134,12 +151,12 @@ export const INFLUENCER_CASES: InfluencerCase[] = [
       { name: "Cohort 4", month: "August", creators: 50, views: "2.2M+", engagement: "5.15%", leads: 6300 },
     ],
     reels: [
-      { group: "June", creator: "The Bath Babes", profile: "https://www.instagram.com/thebathbabes/", url: "https://www.instagram.com/reel/DZNFNEpTOlW/", thumb: BathBabesThumb },
-      { group: "July", creator: "Vanshika", profile: "https://www.instagram.com/chitraabyvanshika", url: "https://www.instagram.com/p/DaNVJCshMzk/", thumb: VanshikaThumb },
-      { group: "May", creator: "Money Mentors", profile: "https://www.instagram.com/yourmoneymentors", url: "https://www.instagram.com/reel/DYZ7eddAg_S/", thumb: MoneyMentorsThumb },
-      { group: "May", creator: "Lakshay Sharma", profile: "https://www.instagram.com/lakshaysharma_._", url: "https://www.instagram.com/reel/DYMzUxGxRlU/", thumb: LakshayThumb },
-      { group: "May", creator: "Rohan Mehta", profile: "https://www.instagram.com/growthwithrohan/", url: "https://www.instagram.com/reel/DYRejpniYBV/", thumb: RohanThumb },
-      { group: "June", creator: "Mohd. Shadab", profile: "https://www.instagram.com/shaddy_noor/", url: "https://www.instagram.com/reel/DY61iAXhpQS/", thumb: ShadabThumb },
+      { creator: "The Bath Babes", profile: "https://www.instagram.com/thebathbabes/", url: "https://www.instagram.com/reel/DZNFNEpTOlW/", portrait: BathBabesPortrait, thumb: BathBabesThumb },
+      { creator: "Vanshika", profile: "https://www.instagram.com/chitraabyvanshika", url: "https://www.instagram.com/p/DaNVJCshMzk/", portrait: VanshikaPortrait, thumb: VanshikaThumb },
+      { creator: "Money Mentors", profile: "https://www.instagram.com/yourmoneymentors", url: "https://www.instagram.com/reel/DYZ7eddAg_S/", portrait: MoneyMentorsPortrait, thumb: MoneyMentorsThumb },
+      { creator: "Lakshay Sharma", profile: "https://www.instagram.com/lakshaysharma_._", url: "https://www.instagram.com/reel/DYMzUxGxRlU/", portrait: LakshayPortrait, thumb: LakshayThumb },
+      { creator: "Rohan Mehta", profile: "https://www.instagram.com/growthwithrohan/", url: "https://www.instagram.com/reel/DYRejpniYBV/", portrait: RohanPortrait, thumb: RohanThumb },
+      { creator: "Mohd. Shadab", profile: "https://www.instagram.com/shaddy_noor/", url: "https://www.instagram.com/reel/DY61iAXhpQS/", portrait: ShadabPortrait, thumb: ShadabThumb },
     ],
   },
   {

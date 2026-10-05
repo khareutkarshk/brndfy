@@ -186,7 +186,7 @@ function CreatorStack({ reels }: { reels: Reel[] }) {
         <div className="flex items-center">
             <div className="flex -space-x-3">
                 {shown.map((n, i) => {
-                    const photo = CREATOR_PHOTOS[n];
+                    const photo = reels.find((reel) => reel.creator === n)?.portrait ?? CREATOR_PHOTOS[n];
                     return (
                         <div
                             key={n}
@@ -233,13 +233,6 @@ function CaseArticle({
     const outcomes = restStats.filter((s) => s !== views);
     const rail = useRef<HTMLDivElement>(null);
     const nudge = (dir: 1 | -1) => rail.current?.scrollBy({ left: dir * rail.current.clientWidth * 0.8, behavior: "smooth" });
-    const groups = study.reels.reduce<{ label?: string; reels: Reel[] }[]>((acc, r) => {
-        const last = acc[acc.length - 1];
-        if (last && last.label === r.group) last.reels.push(r);
-        else acc.push({ label: r.group, reels: [r] });
-        return acc;
-    }, []);
-
     return (
         <article id={`case-${study.slug}`} data-case className="scroll-mt-28 py-10 first:pt-0 lg:py-14">
             {/* Mobile identity (desktop shows it in the sticky index) */}
@@ -366,17 +359,8 @@ function CaseArticle({
                         ref={rail}
                         className="no-scrollbar -mx-4 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:-mx-10 sm:px-10 lg:mx-0 lg:px-0 lg:mask-[linear-gradient(to_right,black_88%,transparent)]"
                     >
-                        {groups.map((g, gi) => (
-                            <div key={gi} className="flex shrink-0 gap-3">
-                                {g.label && (
-                                    <div className="flex w-8 shrink-0 items-start justify-center pt-2">
-                                        <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent [writing-mode:vertical-rl]">{g.label}</span>
-                                    </div>
-                                )}
-                                {g.reels.map((r, i) => (
-                                    <ReelTile key={`${r.creator}-${i}`} reel={r} index={gi * 5 + i} onOpen={(reel) => onOpen(reel, study.brand)} />
-                                ))}
-                            </div>
+                        {study.reels.map((r, i) => (
+                            <ReelTile key={`${r.creator}-${i}`} reel={r} index={i} onOpen={(reel) => onOpen(reel, study.brand)} />
                         ))}
                     </div>
                 </div>
